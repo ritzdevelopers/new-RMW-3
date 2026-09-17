@@ -31,7 +31,7 @@ export function Hero() {
         return;
       }
 
-      const from = Math.max(window.innerWidth, scene.offsetWidth) + 48;
+      const from = scene.offsetWidth + 24;
       gsap.set(items, { autoAlpha: 0, y: 18 });
       gsap.set(scene, { x: from, force3D: true });
     },
@@ -47,7 +47,7 @@ export function Hero() {
       const scene = root.querySelector(".hero-scene") as HTMLElement | null;
       if (!scene) return;
 
-      const from = Math.max(window.innerWidth, scene.offsetWidth) + 48;
+      const from = scene.offsetWidth + 24;
       const tl = gsap.timeline();
 
       tl.to(
@@ -55,9 +55,9 @@ export function Hero() {
         {
           autoAlpha: 1,
           y: 0,
-          duration: 1.2,
+          duration: 0.9,
           ease: "power2.out",
-          stagger: 0.1,
+          stagger: 0.07,
         },
         0,
       );
@@ -67,8 +67,8 @@ export function Hero() {
         { x: from, force3D: true },
         {
           x: 0,
-          duration: 3.4,
-          ease: "power1.inOut",
+          duration: 1.85,
+          ease: "power2.out",
           immediateRender: true,
         },
         0,

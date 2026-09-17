@@ -68,18 +68,18 @@ export function Preloader() {
           },
           0.2,
         )
+        .call(revealPage, undefined, 1.45)
         .to(
           root,
           {
             autoAlpha: 0,
-            duration: 0.75,
-            ease: "power2.inOut",
-            onStart: revealPage,
+            duration: 0.45,
+            ease: "power2.out",
           },
-          "+=0.12",
+          1.45,
         );
 
-      const safety = window.setTimeout(finish, 4200);
+      const safety = window.setTimeout(finish, 2800);
       return () => window.clearTimeout(safety);
     },
     { scope: rootRef, dependencies: [reduced, setReady] },

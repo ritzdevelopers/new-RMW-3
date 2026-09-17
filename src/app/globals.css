@@ -338,7 +338,7 @@ body {
   z-index: 2;
   flex: 0 0 auto;
   width: min(100%, 720px);
-  transform: translate3d(110vw, 0, 0);
+  transform: translate3d(100%, 0, 0);
   will-change: transform;
 }
 
