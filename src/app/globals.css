@@ -159,6 +159,10 @@ body {
   }
 }
 
+.site-header {
+  opacity: 0;
+}
+
 .site-nav {
   display: none;
   align-items: center;
@@ -334,7 +338,12 @@ body {
   z-index: 2;
   flex: 0 0 auto;
   width: min(100%, 720px);
+  transform: translate3d(110vw, 0, 0);
   will-change: transform;
+}
+
+.hero [data-hero-item] {
+  opacity: 0;
 }
 
 /* Truck + mascot bounce while driving; wheels sit on the road strip. */
@@ -695,5 +704,14 @@ body {
 
   html:not(.lenis) {
     scroll-behavior: auto;
+  }
+
+  .hero-scene {
+    transform: none;
+  }
+
+  .hero [data-hero-item],
+  .site-header {
+    opacity: 1;
   }
 }

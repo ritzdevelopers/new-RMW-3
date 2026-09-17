@@ -19,27 +19,60 @@ export function Hero() {
   useGSAP(
     () => {
       const root = rootRef.current;
-      if (!root || !ready) return;
+      if (!root) return;
 
       const items = root.querySelectorAll("[data-hero-item]");
       const scene = root.querySelector(".hero-scene") as HTMLElement | null;
       if (!scene) return;
 
-      gsap.from(items, {
-        y: 24,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger: 0.08,
-      });
-
       if (reduced) {
+        gsap.set(items, { autoAlpha: 1, y: 0 });
         gsap.set(scene, { x: 0 });
         return;
       }
 
-      const from = Math.max(root.clientWidth, scene.offsetWidth);
-      gsap.set(scene, { x: from });
+      const from = Math.max(window.innerWidth, scene.offsetWidth) + 48;
+      gsap.set(items, { autoAlpha: 0, y: 18 });
+      gsap.set(scene, { x: from, force3D: true });
+    },
+    { scope: rootRef, dependencies: [reduced] },
+  );
+
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root || !ready || reduced) return;
+
+      const items = root.querySelectorAll("[data-hero-item]");
+      const scene = root.querySelector(".hero-scene") as HTMLElement | null;
+      if (!scene) return;
+
+      const from = Math.max(window.innerWidth, scene.offsetWidth) + 48;
+      const tl = gsap.timeline();
+
+      tl.to(
+        items,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power2.out",
+          stagger: 0.1,
+        },
+        0,
+      );
+
+      tl.fromTo(
+        scene,
+        { x: from, force3D: true },
+        {
+          x: 0,
+          duration: 3.4,
+          ease: "power1.inOut",
+          immediateRender: true,
+        },
+        0,
+      );
 
       gsap.to(".hero-wheel", {
         rotation: 360,
@@ -48,30 +81,23 @@ export function Hero() {
         repeat: -1,
       });
       gsap.to(".hero-rig", {
-        y: -4,
-        rotation: 0.35,
+        y: -3,
+        rotation: 0.22,
         transformOrigin: "50% 94%",
-        duration: 0.22,
+        duration: 0.58,
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
       });
       gsap.to(".hero-mascot", {
-        y: "-1.4%",
-        duration: 0.38,
+        y: "-1.1%",
+        duration: 0.72,
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
       });
-
-      gsap.to(scene, {
-        x: 0,
-        duration: 2.6,
-        delay: 0.15,
-        ease: "power2.out",
-      });
     },
-    { dependencies: [ready, reduced] },
+    { scope: rootRef, dependencies: [ready, reduced] },
   );
 
   return (

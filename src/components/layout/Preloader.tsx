@@ -20,11 +20,15 @@ export function Preloader() {
       const root = rootRef.current;
       if (!root) return;
 
+      const revealPage = () => {
+        setReady();
+        document.documentElement.classList.remove("preloader-lock");
+      };
+
       const finish = () => {
         if (doneRef.current) return;
         doneRef.current = true;
-        setReady();
-        document.documentElement.classList.remove("preloader-lock");
+        revealPage();
         setVisible(false);
       };
 
@@ -64,9 +68,18 @@ export function Preloader() {
           },
           0.2,
         )
-        .to(root, { autoAlpha: 0, duration: 0.45, ease: "power2.inOut" }, "+=0.2");
+        .to(
+          root,
+          {
+            autoAlpha: 0,
+            duration: 0.75,
+            ease: "power2.inOut",
+            onStart: revealPage,
+          },
+          "+=0.12",
+        );
 
-      const safety = window.setTimeout(finish, 3200);
+      const safety = window.setTimeout(finish, 4200);
       return () => window.clearTimeout(safety);
     },
     { scope: rootRef, dependencies: [reduced, setReady] },
