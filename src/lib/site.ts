@@ -1,12 +1,21 @@
 export const site = {
   name: "RMW",
-  tagline: "Stories in motion.",
+  fullName: "Ritz Media World",
+  tagline: "Creative OK Please",
   description:
-    "A digital atelier crafting award-winning websites with cinematic motion, smooth scrolling, and considered design.",
+    "Independent creative media agency in India. We turn business problems into ideas that travel—from brand and campaign to media, digital, film, 3D and AI.",
   nav: [
-    { href: "/", label: "Home" },
     { href: "/work", label: "Work" },
+    { href: "/capabilities", label: "Capabilities" },
+    { href: "/industries", label: "Industries" },
+    { href: "/insights", label: "Insights" },
     { href: "/about", label: "About" },
+  ],
+  ticker: [
+    "Ideas on board",
+    "Creative OK Please",
+    "India to the world",
+    "No empty promises",
   ],
 };
 

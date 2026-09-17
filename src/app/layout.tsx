@@ -1,36 +1,50 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif, Noto_Serif_Devanagari } from "next/font/google";
+import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quicksand } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const instrument = Instrument_Serif({
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const archivo = Archivo_Black({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-instrument",
+  variable: "--font-display",
 });
 
-const devanagari = Noto_Serif_Devanagari({
-  subsets: ["devanagari"],
-  variable: "--font-deva-source",
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-quicksand",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s — ${site.name}`,
+    default: `${site.fullName} — ${site.tagline}`,
+    template: `%s — ${site.fullName}`,
   },
   description: site.description,
 };
@@ -39,9 +53,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} ${devanagari.variable} antialiased`}
+      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-svh bg-background font-sans text-foreground">
+      <body
+        className="min-h-svh bg-background font-sans text-foreground"
+        suppressHydrationWarning
+      >
         <AppProviders>
           <Header />
           <main className="flex-1">{children}</main>

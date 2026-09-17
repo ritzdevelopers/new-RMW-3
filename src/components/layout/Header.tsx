@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ButtonIcon } from "@/components/layout/ButtonIcon";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { cn } from "@/lib/cn";
@@ -11,40 +13,50 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 mix-blend-difference">
-      <div className="flex items-center justify-between px-6 py-6 md:px-10">
+    <header className="absolute top-0 right-0 left-0 z-50">
+      <div className="flex items-center justify-between gap-4 px-5 py-5 md:px-10 md:py-6">
         <Magnetic>
-          <TransitionLink
-            href="/"
-            className="font-serif text-2xl tracking-tight text-white"
-          >
-            {site.name}
+          <TransitionLink href="/" className="flex items-center gap-2" aria-label={site.fullName}>
+            <BrandMark />
           </TransitionLink>
         </Magnetic>
-        <nav className="flex items-center gap-7 text-[11px] uppercase tracking-[0.24em] text-white">
+
+        <nav className="site-nav">
           {site.nav.map((item) => (
-            <Magnetic key={item.href} strength={0.25}>
+            <Magnetic key={item.href} strength={0.2}>
               <TransitionLink
                 href={item.href}
                 className={cn(
-                  "transition-opacity duration-300",
-                  pathname === item.href ? "opacity-100" : "opacity-55 hover:opacity-100",
+                  "site-nav-link",
+                  pathname === item.href && "is-active",
                 )}
               >
                 {item.label}
               </TransitionLink>
             </Magnetic>
           ))}
-          <Magnetic strength={0.25}>
-            <Link
-              href="mailto:hello@rmw.studio"
-              className="hidden opacity-55 transition-opacity duration-300 hover:opacity-100 md:inline"
-            >
-              Contact
-            </Link>
-          </Magnetic>
         </nav>
+
+        <Link href="mailto:hello@ritzmediaworld.com" className="btn btn-ink">
+          Start a project
+          <ButtonIcon name="plus" />
+        </Link>
       </div>
     </header>
+  );
+}
+
+function BrandMark() {
+  return (
+    <span className="brand-mark">
+      <Image
+        src="/logo.png"
+        alt=""
+        width={61}
+        height={77}
+        className="brand-mark-logo"
+        priority
+      />
+    </span>
   );
 }

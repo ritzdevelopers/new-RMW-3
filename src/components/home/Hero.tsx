@@ -1,93 +1,143 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 import { useRef } from "react";
 import { useMotion } from "@/components/providers/MotionProvider";
-import { cn } from "@/lib/cn";
-import { gsap, registerGsap, SplitText } from "@/lib/gsap";
+import { ButtonIcon } from "@/components/layout/ButtonIcon";
+import { Road } from "@/components/home/Road";
+import { TransitionLink } from "@/components/motion/TransitionLink";
+import { gsap, registerGsap } from "@/lib/gsap";
 
 registerGsap();
+gsap.registerPlugin(useGSAP);
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const { ready, reduced } = useMotion();
 
   useGSAP(
     () => {
-      const title = titleRef.current;
       const root = rootRef.current;
-      if (!title || !root || !ready || reduced) return;
+      if (!root || !ready) return;
 
-      let split: SplitText | undefined;
-      let cancelled = false;
+      const items = root.querySelectorAll("[data-hero-item]");
+      const scene = root.querySelector(".hero-scene") as HTMLElement | null;
+      if (!scene) return;
 
-      document.fonts.ready.then(() => {
-        if (cancelled || !titleRef.current) return;
-
-        split = new SplitText(title, {
-          type: "lines,words",
-          linesClass: "split-line",
-        });
-
-        gsap.set(title, { opacity: 1 });
-        const items = root.querySelectorAll("[data-hero-item]");
-        gsap.from(split.words, {
-          yPercent: 120,
-          duration: 1.4,
-          ease: "power4.out",
-          stagger: 0.05,
-        });
-        gsap.from(items, {
-          y: 28,
-          opacity: 0,
-          duration: 1.1,
-          ease: "power3.out",
-          stagger: 0.08,
-          delay: 0.35,
-        });
+      gsap.from(items, {
+        y: 24,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.08,
       });
 
-      return () => {
-        cancelled = true;
-        split?.revert();
-      };
+      if (reduced) {
+        gsap.set(scene, { x: 0 });
+        return;
+      }
+
+      const from = Math.max(root.clientWidth, scene.offsetWidth);
+      gsap.set(scene, { x: from });
+
+      gsap.to(".hero-wheel", {
+        rotation: 360,
+        duration: 0.72,
+        ease: "none",
+        repeat: -1,
+      });
+      gsap.to(".hero-rig", {
+        y: -4,
+        rotation: 0.35,
+        transformOrigin: "50% 94%",
+        duration: 0.22,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+      gsap.to(".hero-mascot", {
+        y: "-1.4%",
+        duration: 0.38,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+
+      gsap.to(scene, {
+        x: 0,
+        duration: 2.6,
+        delay: 0.15,
+        ease: "power2.out",
+      });
     },
     { dependencies: [ready, reduced] },
   );
 
   return (
-    <section
-      ref={rootRef}
-      className="relative flex min-h-[100svh] flex-col justify-end px-6 pb-16 pt-32 md:px-10 md:pb-20"
-    >
-      <p
-        data-hero-item
-        className="mb-8 text-[11px] uppercase tracking-[0.32em] text-muted"
-      >
-        Digital atelier / Est. 2026
-      </p>
-      <h1
-        ref={titleRef}
-        className={cn(
-          "max-w-[14ch] font-serif text-[14vw] leading-[0.86] tracking-tight md:text-[9.5vw]",
-          !reduced && "opacity-0",
-        )}
-      >
-        We design websites that linger.
-      </h1>
-      <div
-        data-hero-item
-        className="mt-12 flex max-w-xl flex-col gap-6 text-sm leading-relaxed text-muted md:mt-16 md:flex-row md:items-end md:justify-between md:max-w-none"
-      >
-        <p className="max-w-sm">
-          Smooth scrolling, cinematic page transitions, and motion that feels
-          considered — built for brands that want more than a template.
-        </p>
-        <p className="text-[11px] uppercase tracking-[0.24em]">
-          Scroll to explore
-        </p>
+    <section ref={rootRef} className="hero">
+      <div className="hero-grid">
+        <div className="hero-copy">
+          <p data-hero-item className="hero-kicker">
+            <span>Independent creative</span>
+            <span className="hero-kicker-dot" aria-hidden>
+              •
+            </span>
+            <span>Media agency</span>
+            <span className="hero-kicker-dot" aria-hidden>
+              •
+            </span>
+            <span>India</span>
+          </p>
+          <h1 data-hero-item className="hero-title">
+            Creative OK
+            <br />
+            Please
+          </h1>
+          <p data-hero-item className="hero-lede">
+            We turn business problems into ideas that travel—from brand and
+            campaign to media, digital, film, 3D and AI.
+          </p>
+          <div data-hero-item className="hero-actions">
+            <TransitionLink href="/work" className="btn btn-hot">
+              See the work
+              <ButtonIcon name="arrow" />
+            </TransitionLink>
+            <Link href="mailto:hello@ritzmediaworld.com" className="btn btn-ink">
+              Start a project
+              <ButtonIcon name="plus" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="hero-visual">
+          <div className="hero-scene">
+            <div className="hero-rig">
+              <div className="hero-truck-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="hero-truck"
+                  src="/loader/image 1.png"
+                  alt="RMW truck art"
+                  width={537}
+                  height={305}
+                />
+                <span className="hero-wheel hero-wheel-front" aria-hidden />
+                <span className="hero-wheel hero-wheel-rear" aria-hidden />
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="hero-mascot"
+                src="/hero-section/image 19.png"
+                alt=""
+                width={640}
+                height={800}
+              />
+            </div>
+          </div>
+        </div>
       </div>
+      <Road />
     </section>
   );
 }
