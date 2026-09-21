@@ -9,23 +9,6 @@ import { site } from "@/lib/site";
 registerGsap();
 gsap.registerPlugin(useGSAP);
 
-function TruckIcon() {
-  return (
-    <svg viewBox="0 0 48 48" className="route-rail-truck-svg" aria-hidden>
-      <circle cx="24" cy="24" r="23" fill="#0b1120" />
-      <g transform="translate(9 15)">
-        <rect x="0" y="3" width="17" height="12" rx="1.5" fill="#e53e2a" />
-        <path d="M17 6h6l4 4v5H17z" fill="#f0a500" />
-        <rect x="19" y="7" width="4.5" height="3.4" rx="0.6" fill="#0b1120" />
-        <circle cx="6" cy="16" r="2.6" fill="#fff" />
-        <circle cx="6" cy="16" r="1.1" fill="#0b1120" />
-        <circle cx="22" cy="16" r="2.6" fill="#fff" />
-        <circle cx="22" cy="16" r="1.1" fill="#0b1120" />
-      </g>
-    </svg>
-  );
-}
-
 export function Route() {
   const rootRef = useRef<HTMLElement>(null);
   const { ready, reduced } = useMotion();
@@ -95,9 +78,9 @@ export function Route() {
             ease: "none",
             scrollTrigger: {
               trigger: root,
-              start: "top 65%",
-              end: "bottom 92%",
-              scrub: 1,
+              start: () => `top ${proofHeight()}px`,
+              end: `+=${pinDistance}`,
+              scrub: 1.4,
               invalidateOnRefresh: true,
             },
           },
@@ -130,7 +113,8 @@ export function Route() {
           height={40}
         />
         <span className="route-rail-truck">
-          <TruckIcon />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/footer/truck.png" alt="" width={120} height={56} />
         </span>
       </div>
 

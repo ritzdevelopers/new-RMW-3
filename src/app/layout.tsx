@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quattrocento, Quicksand, Space_Mono } from "next/font/google";
+import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { site } from "@/lib/site";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AppProviders>
           <Header />
           <main>{children}</main>
+          <Footer />
         </AppProviders>
       </body>
     </html>

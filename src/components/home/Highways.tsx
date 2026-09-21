@@ -38,7 +38,7 @@ export function Highways() {
   );
 
   return (
-    <section ref={rootRef} className="highways" aria-label="Common highways">
+    <section ref={rootRef} id="highways" className="highways" aria-label="Common highways">
       <div className="highways-inner">
         <div className="highways-left">
           <div data-highways-item className="highways-copy">

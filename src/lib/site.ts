@@ -315,6 +315,63 @@ export const site = {
       "3D Rendering Service",
     ],
   },
+  footer: {
+    title: ["Have a", "destination", "in", "mind?"],
+    blurb:
+      "Ritz Media World is an independent creative, branding, digital and media agency, founded in 2008 and based in Noida, Delhi NCR.",
+    address: "402–404, 4th Floor, Corporate Park, Tower A1, Sector 142, Noida 201305",
+    email: "info@ritzmediaworld.com",
+    phones: ["+91 9220516777", "+91 7290002168"],
+    columns: [
+      {
+        title: "Services",
+        links: [
+          { label: "Brand & Creative", href: "/capabilities" },
+          { label: "Digital & Performance", href: "/capabilities" },
+          { label: "Film, 3D & AI", href: "/capabilities" },
+          { label: "Media", href: "/capabilities" },
+        ],
+      },
+      {
+        title: "Industries",
+        links: [
+          { label: "Real Estate", href: "/industries" },
+          { label: "Healthcare", href: "/industries" },
+          { label: "Education", href: "/industries" },
+          { label: "E-commerce", href: "/industries" },
+          { label: "Manufacturing", href: "/industries" },
+          { label: "Startups", href: "/industries" },
+        ],
+      },
+      {
+        title: "Company",
+        links: [
+          { label: "Work", href: "/work" },
+          { label: "Insights", href: "/insights" },
+          { label: "About", href: "/about" },
+          { label: "Careers", href: "/about" },
+          { label: "Contact", href: "/#start-a-project" },
+        ],
+      },
+      {
+        title: "Resources",
+        links: [
+          { label: "Case Studies", href: "/work" },
+          { label: "Reports", href: "/insights" },
+          { label: "FAQs", href: "/#highways" },
+        ],
+      },
+      {
+        title: "Digital",
+        links: [
+          { label: "LinkedIn", href: "https://www.linkedin.com/", external: true },
+          { label: "Instagram", href: "https://www.instagram.com/", external: true },
+          { label: "YouTube", href: "https://www.youtube.com/", external: true },
+          { label: "Facebook", href: "https://www.facebook.com/", external: true },
+        ],
+      },
+    ],
+  },
 };
 
 export const projects = [
