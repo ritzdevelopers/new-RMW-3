@@ -123,7 +123,7 @@ export function Hero() {
               See the work
               <ButtonIcon name="arrow" />
             </TransitionLink>
-            <Link href="mailto:hello@ritzmediaworld.com" className="btn btn-ink">
+            <Link href="/#start-a-project" className="btn btn-ink">
               Start a project
               <ButtonIcon name="plus" />
             </Link>

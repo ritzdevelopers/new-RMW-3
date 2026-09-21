@@ -228,6 +228,93 @@ export const site = {
       },
     ],
   },
+  awards: {
+    title: "Awards",
+    items: [
+      {
+        year: "2008",
+        heading: "Foundation",
+        copy: "Ritz Media World launched with a mission to reimagine brand communication for India's growth markets.",
+      },
+    ],
+  },
+  news: {
+    title: "What's New? News & Blogs",
+    lede: "Strategy, creative and media built as one connected system—not a collection of loose deliverables.",
+    cta: "View all work",
+    href: "/work",
+    posts: [
+      {
+        slug: "best-real-estate-creative-agency-india-2026",
+        title:
+          "Best Real Estate Creative Agency in India: Who Actually Delivers Results in 2026",
+        tags: ["Real Estate", "Brand Campaign", "Integrated Media"],
+        image: "/blog-section/image.png",
+        href: "/insights",
+      },
+      {
+        slug: "best-real-estate-creative-agency-india-2026-2",
+        title:
+          "Best Real Estate Creative Agency in India: Who Actually Delivers Results in 2026",
+        tags: ["Real Estate", "Brand Campaign", "Integrated Media"],
+        image: "/blog-section/image.png",
+        href: "/insights",
+      },
+    ],
+  },
+  highways: {
+    title: "Common Highways.",
+    lede: "Clear answers about our tactical engines, campaign distribution models, and how we drive high-yield performance for modern developers and global real estate brands.",
+    card: {
+      title: "Need a Custom Highway?",
+      copy: "Get a tailored real estate marketing audit and projection strategy for your upcoming project pipeline.",
+      cta: "Request an Audit",
+      href: "/#start-a-project",
+    },
+    truck: "/s10/highway-truck.png",
+    faqs: [
+      {
+        q: "How does Ritz Media World accelerate real estate lead generation?",
+        a: "We deploy hyper-targeted PPC campaigns combined with localized lead-capture funnels specifically designed for high-intent property buyers. By leveraging advanced demographic filters, behavior-based targeting, and customized CRM integrations, we ensure your sales team receives qualified, nurture-ready prospects rather than empty clicks.",
+      },
+      {
+        q: "What platforms do you prioritize for luxury property marketing?",
+        a: "We prioritize high-intent platforms where luxury buyers already research and decide — Meta, Google, YouTube, and selected premium publishers — then layer influence and owned channels so the brand stays present from first view to site visit.",
+      },
+      {
+        q: "How do your three creative engines collaborate on a single campaign?",
+        a: "Digital, creative and print sit on one brief. Strategy, message and media are planned together so the film, landing system and outdoor all carry the same idea instead of three separate deliverables.",
+      },
+      {
+        q: "What is your approach to local SEO and reputation management for developers?",
+        a: "We build location-led search visibility, project pages and review systems that match how buyers actually search — then monitor sentiment so reputation stays as managed as the media plan.",
+      },
+      {
+        q: "Do you handle architectural visualization and brand film production?",
+        a: "Yes. From 3D walks and stills to brand films and campaign craft, production stays inside the same team that wrote the brief so the world on screen matches the strategy.",
+      },
+      {
+        q: "How do you measure and report the actual ROI of our digital campaigns?",
+        a: "We track lead quality, cost per enquiry, site visits and pipeline contribution — then report in language sales and marketing can both use, not vanity metrics alone.",
+      },
+    ],
+  },
+  startProject: {
+    kicker: "Start a Project",
+    title: "Get A Free SEO And Digital Audit For Your Brand",
+    cta: "Get My Free Audit",
+    services: [
+      "Digital Marketing",
+      "Creative Services",
+      "Print Advertising",
+      "Radio Advertising",
+      "Content Marketing",
+      "Web Development",
+      "Celebrity Endorsements",
+      "Influencer Marketing",
+      "3D Rendering Service",
+    ],
+  },
 };
 
 export const projects = [

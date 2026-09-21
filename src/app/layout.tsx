@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quattrocento, Quicksand } from "next/font/google";
+import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quattrocento, Quicksand, Space_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { site } from "@/lib/site";
@@ -46,6 +46,12 @@ const quattrocento = Quattrocento({
   variable: "--font-quattrocento",
 });
 
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${site.fullName} — ${site.tagline}`,
@@ -58,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} ${quattrocento.variable} antialiased`}
+      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} ${quattrocento.variable} ${spaceMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <body
