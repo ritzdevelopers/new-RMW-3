@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quicksand } from "next/font/google";
-import { Footer } from "@/components/layout/Footer";
+import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quattrocento, Quicksand } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { site } from "@/lib/site";
@@ -14,7 +13,7 @@ const outfit = Outfit({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const montserrat = Montserrat({
@@ -41,6 +40,12 @@ const quicksand = Quicksand({
   variable: "--font-quicksand",
 });
 
+const quattrocento = Quattrocento({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-quattrocento",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${site.fullName} — ${site.tagline}`,
@@ -53,17 +58,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} antialiased`}
+      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} ${quattrocento.variable} antialiased`}
       suppressHydrationWarning
     >
       <body
-        className="min-h-svh bg-background font-sans text-foreground"
+        className="bg-background font-sans text-foreground"
         suppressHydrationWarning
       >
         <AppProviders>
           <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <main>{children}</main>
         </AppProviders>
       </body>
     </html>

@@ -8,12 +8,26 @@ import { gsap, registerGsap } from "@/lib/gsap";
 registerGsap();
 gsap.registerPlugin(useGSAP);
 
-const DASH_TILE = 84;
-const GRAIN_TILE = 160;
-const DASH_SPEED = 150;
-const GRAIN_SPEED = 110;
+const ROAD_TILE = 1440;
+const ROAD_SPEED = 160;
+const TILES = 4;
 
-export function Road() {
+const REFLECTOR_STEP = 64;
+
+function RoadReflectors() {
+  const count = Math.round((ROAD_TILE * TILES) / REFLECTOR_STEP);
+  const dots = Array.from({ length: count }, (_, index) => index * REFLECTOR_STEP);
+
+  return (
+    <>
+      {dots.map((x) => (
+        <span key={x} className="road-reflector" style={{ left: x }} />
+      ))}
+    </>
+  );
+}
+
+export function Road({ className = "" }: { className?: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const { reduced } = useMotion();
 
@@ -22,49 +36,33 @@ export function Road() {
       const root = rootRef.current;
       if (!root || reduced) return;
 
-      const dash = root.querySelector(".road-run-track");
-      const grain = root.querySelector(".road-grain");
+      const worlds = root.querySelectorAll(".road-world");
+      const tween = gsap.fromTo(
+        worlds,
+        { x: -ROAD_TILE },
+        {
+          x: 0,
+          duration: ROAD_TILE / ROAD_SPEED,
+          ease: "none",
+          repeat: -1,
+          force3D: true,
+        },
+      );
 
-      const tweens = [
-        gsap.fromTo(
-          dash,
-          { x: 0 },
-          {
-            x: DASH_TILE,
-            duration: DASH_TILE / DASH_SPEED,
-            ease: "none",
-            repeat: -1,
-          },
-        ),
-        gsap.fromTo(
-          grain,
-          { x: 0 },
-          {
-            x: GRAIN_TILE,
-            duration: GRAIN_TILE / GRAIN_SPEED,
-            ease: "none",
-            repeat: -1,
-          },
-        ),
-      ];
-
-      return () => tweens.forEach((tween) => tween.kill());
+      return () => tween.kill();
     },
     { scope: rootRef, dependencies: [reduced] },
   );
 
   return (
-    <div ref={rootRef} className="road" aria-hidden>
-      <span className="road-asphalt" />
-      <span className="road-grain" />
-      <span className="road-light" />
-      <span className="road-kerb" />
-      <span className="road-edge" />
-      <div className="road-run">
-        <div className="road-run-track">
-          <span className="road-dash-strip" />
-          <span className="road-dash-strip" />
+    <div ref={rootRef} className={`road ${className}`.trim()} aria-hidden>
+      <div className="road-bed">
+        <div className="road-world road-surface" />
+        <div className="road-world road-reflector-track">
+          <RoadReflectors />
         </div>
+        <span className="road-glow" />
+        <span className="road-sheen" />
       </div>
     </div>
   );

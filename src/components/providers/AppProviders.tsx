@@ -1,6 +1,5 @@
 "use client";
 
-import { CustomCursor } from "@/components/layout/CustomCursor";
 import { Grain } from "@/components/layout/Grain";
 import { Preloader } from "@/components/layout/Preloader";
 import { MotionProvider } from "@/components/providers/MotionProvider";
@@ -13,7 +12,6 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       <SmoothScroll>
         <PageTransition>
           <Preloader />
-          <CustomCursor />
           <Grain />
           {children}
         </PageTransition>

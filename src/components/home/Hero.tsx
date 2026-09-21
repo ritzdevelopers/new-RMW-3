@@ -74,12 +74,6 @@ export function Hero() {
         0,
       );
 
-      gsap.to(".hero-wheel", {
-        rotation: 360,
-        duration: 0.72,
-        ease: "none",
-        repeat: -1,
-      });
       gsap.to(".hero-rig", {
         y: -3,
         rotation: 0.22,
@@ -143,13 +137,11 @@ export function Hero() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="hero-truck"
-                  src="/loader/image 1.png"
+                  src="/hero-section/Truck_Art.png"
                   alt="RMW truck art"
-                  width={537}
-                  height={305}
+                  width={1995}
+                  height={788}
                 />
-                <span className="hero-wheel hero-wheel-front" aria-hidden />
-                <span className="hero-wheel hero-wheel-rear" aria-hidden />
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

@@ -1,0 +1,16 @@
+export const roadbookPages = [
+  { src: "/s6/cover.png", title: "Cover" },
+  { src: "/s6/contents.png", title: "Contents" },
+  { src: "/s6/manifesto.png", title: "Ideas that travel" },
+  { src: "/s6/truck.png", title: "On the road" },
+  { src: "/s6/engines.png", title: "Three engines" },
+  { src: "/s6/work-index.png", title: "Selected work" },
+  { src: "/s6/belonging.png", title: "A bloom of belonging" },
+  { src: "/s6/editorial.png", title: "About the work" },
+  { src: "/s6/insight.png", title: "Insight" },
+  { src: "/s6/idea.png", title: "Idea" },
+  { src: "/s6/impact.png", title: "Impact" },
+  { src: "/s6/quote.png", title: "No empty promises" },
+  { src: "/s6/thanks.png", title: "Keep going" },
+  { src: "/s6/back.png", title: "Back cover" },
+] as const;
