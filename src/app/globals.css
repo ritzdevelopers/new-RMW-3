@@ -2,22 +2,13 @@
 @import "lenis/dist/lenis.css";
 
 :root {
-  --background: #f7eef6;
+  --background: #9ed8f5;
   --foreground: #14151c;
   --muted: #5b5d68;
   --accent: #db023d;
   --ink: #111318;
   --line: rgba(20, 21, 28, 0.12);
-  --hero-fill: linear-gradient(
-    135deg,
-    #ceb9ec 0%,
-    #f2d3e4 12.73%,
-    #f0d9d2 25.46%,
-    #f0e8d0 36.77%,
-    #d2f3f1 49.5%,
-    #e2e9f7 60.81%,
-    #e0cfef 70.71%
-  );
+  --hero-fill: url("/hero-section/hero-section-gradiant-image-1995by788px.jpg");
 }
 
 @theme inline {
@@ -45,7 +36,11 @@ body {
 body {
   font-family: var(--font-sans), sans-serif;
   text-rendering: optimizeLegibility;
-  background: var(--hero-fill);
+  background-color: var(--background);
+  background-image: var(--hero-fill);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
@@ -201,7 +196,12 @@ body {
   flex-direction: column;
   padding: 7.5rem 0 0;
   overflow-x: hidden;
-  background: var(--hero-fill);
+  background-color: var(--background);
+  background-image: var(--hero-fill);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .hero-grid {
@@ -2981,7 +2981,12 @@ body {
   z-index: 1;
   overflow: hidden;
   color: #14151c;
-  background: var(--hero-fill);
+  background-color: var(--background);
+  background-image: var(--hero-fill);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .highways-inner {
