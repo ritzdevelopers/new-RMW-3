@@ -352,7 +352,7 @@ body {
   position: relative;
   z-index: 2;
   width: 100%;
-  aspect-ratio: 1995 / 788;
+  aspect-ratio: 737 / 372;
   margin-bottom: calc(var(--road-h) * -0.55);
   filter: drop-shadow(0 18px 22px rgba(40, 20, 60, 0.16));
 }
@@ -400,10 +400,10 @@ body {
 /* Sits behind the cargo box, aligned to its front-left edge. */
 .hero-mascot {
   position: absolute;
-  top: -66%;
-  left: 30.5%;
+  top: -42%;
+  left: 29%;
   z-index: 1;
-  width: 22%;
+  width: 20%;
   height: auto;
   pointer-events: none;
 }

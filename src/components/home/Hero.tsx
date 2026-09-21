@@ -137,19 +137,19 @@ export function Hero() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="hero-truck"
-                  src="/hero-section/Truck_Art.png"
+                  src="/hero-section/hero-truck.png"
                   alt="RMW truck art"
-                  width={1995}
-                  height={788}
+                  width={737}
+                  height={372}
                 />
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="hero-mascot"
-                src="/hero-section/image 19.png"
+                src="/hero-section/hero-mascot.png"
                 alt=""
-                width={640}
-                height={800}
+                width={140}
+                height={202}
               />
             </div>
           </div>
