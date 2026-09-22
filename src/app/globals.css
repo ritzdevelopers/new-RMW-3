@@ -369,6 +369,8 @@ body {
   display: block;
   width: 100%;
   height: auto;
+  object-fit: contain;
+  background: transparent;
 }
 
 /* Spin overlays sit on the rims of the truck art (537x305 source). */
@@ -395,17 +397,6 @@ body {
 
 .hero-wheel-rear {
   left: 56.2%;
-}
-
-/* Sits behind the cargo box, aligned to its front-left edge. */
-.hero-mascot {
-  position: absolute;
-  top: -42%;
-  left: 29%;
-  z-index: 1;
-  width: 20%;
-  height: auto;
-  pointer-events: none;
 }
 
 .ticker {

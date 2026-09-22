@@ -83,13 +83,6 @@ export function Hero() {
         repeat: -1,
         yoyo: true,
       });
-      gsap.to(".hero-mascot", {
-        y: "-1.1%",
-        duration: 0.72,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
     },
     { scope: rootRef, dependencies: [ready, reduced] },
   );
@@ -134,23 +127,20 @@ export function Hero() {
           <div className="hero-scene">
             <div className="hero-rig">
               <div className="hero-truck-wrap">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <video
                   className="hero-truck"
-                  src="/hero-section/hero-truck.png"
-                  alt="RMW truck art"
+                  src="/hero-section/truck-drive.mp4"
+                  poster="/hero-section/hero-truck.png"
                   width={737}
                   height={372}
+                  autoPlay={!reduced}
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-label="RMW truck art"
                 />
               </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="hero-mascot"
-                src="/hero-section/hero-mascot.png"
-                alt=""
-                width={140}
-                height={202}
-              />
             </div>
           </div>
         </div>
