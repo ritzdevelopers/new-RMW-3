@@ -127,18 +127,17 @@ export function Hero() {
           <div className="hero-scene">
             <div className="hero-rig">
               <div className="hero-truck-wrap">
-                <video
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   className="hero-truck"
-                  src="/hero-section/truck-drive.mp4"
-                  poster="/hero-section/hero-truck.png"
-                  width={737}
-                  height={372}
-                  autoPlay={!reduced}
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  aria-label="RMW truck art"
+                  src={
+                    reduced
+                      ? "/hero-section/hero-truck.png"
+                      : "/hero-section/Truck%20Drive%20(2).gif"
+                  }
+                  alt="RMW truck art"
+                  width={600}
+                  height={300}
                 />
               </div>
             </div>
