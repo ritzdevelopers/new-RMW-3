@@ -2,7 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { ButtonIcon } from "@/components/layout/ButtonIcon";
 import { Road } from "@/components/home/Road";
@@ -12,9 +12,30 @@ import { gsap, registerGsap } from "@/lib/gsap";
 registerGsap();
 gsap.registerPlugin(useGSAP);
 
+const OK_EN = "OK";
+const OK_HI = "ओके";
+
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const { ready, reduced } = useMotion();
+  const [okLabel, setOkLabel] = useState(OK_EN);
+  const [okSwapping, setOkSwapping] = useState(false);
+
+  useEffect(() => {
+    let swapIn: number | undefined;
+    const swapAt = window.setTimeout(() => {
+      setOkSwapping(true);
+      swapIn = window.setTimeout(() => {
+        setOkLabel(OK_HI);
+        setOkSwapping(false);
+      }, 180);
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(swapAt);
+      if (swapIn !== undefined) window.clearTimeout(swapIn);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -73,23 +94,6 @@ export function Hero() {
         },
         0,
       );
-
-      gsap.to(".hero-rig", {
-        y: -3,
-        rotation: 0.22,
-        transformOrigin: "50% 94%",
-        duration: 0.58,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
-      gsap.to(".hero-mascot", {
-        y: "-1.1%",
-        duration: 0.72,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
     },
     { scope: rootRef, dependencies: [ready, reduced] },
   );
@@ -110,9 +114,16 @@ export function Hero() {
             <span>India</span>
           </p>
           <h1 data-hero-item className="hero-title">
-            Creative OK
-            <br />
-            Please
+            <span className="hero-title-line">
+              Creative{" "}
+              <span
+                className={`hero-title-ok${okSwapping ? " is-swapping" : ""}`}
+                lang={okLabel === OK_HI ? "hi" : "en"}
+              >
+                {okLabel}
+              </span>
+            </span>
+            <span className="hero-title-line">Please</span>
           </h1>
           <p data-hero-item className="hero-lede">
             We turn business problems into ideas that travel—from brand and
@@ -134,23 +145,20 @@ export function Hero() {
           <div className="hero-scene">
             <div className="hero-rig">
               <div className="hero-truck-wrap">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <video
                   className="hero-truck"
-                  src="/hero-section/Truck_Art.png"
-                  alt="RMW truck art"
-                  width={1995}
-                  height={788}
+                  src="/hero-section/truck-drive.webm"
+                  poster="/hero-section/truck-drive.png"
+                  width={1980}
+                  height={1080}
+                  autoPlay={!reduced}
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-label="RMW truck"
                 />
               </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="hero-mascot"
-                src="/hero-section/image 19.png"
-                alt=""
-                width={640}
-                height={800}
-              />
             </div>
           </div>
         </div>

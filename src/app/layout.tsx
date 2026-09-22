@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Inter, Montserrat, Outfit, Plus_Jakarta_Sans, Quattrocento, Quicksand, Space_Mono } from "next/font/google";
+import {
+  Archivo_Black,
+  Inter,
+  Montserrat,
+  Outfit,
+  Plus_Jakarta_Sans,
+  Quattrocento,
+  Quicksand,
+  Rye,
+  Space_Mono,
+  Yatra_One,
+} from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AppProviders } from "@/components/providers/AppProviders";
@@ -53,6 +64,19 @@ const spaceMono = Space_Mono({
   variable: "--font-space-mono",
 });
 
+const rye = Rye({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-rye",
+});
+
+/* Rye is Latin-only; Yatra One covers Devanagari for the Hindi "OK" swap. */
+const yatra = Yatra_One({
+  subsets: ["latin", "devanagari"],
+  weight: "400",
+  variable: "--font-yatra",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${site.fullName} — ${site.tagline}`,
@@ -65,7 +89,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} ${quattrocento.variable} ${spaceMono.variable} antialiased`}
+      className={`${outfit.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${jakarta.variable} ${quicksand.variable} ${quattrocento.variable} ${spaceMono.variable} ${rye.variable} ${yatra.variable} antialiased`}
       suppressHydrationWarning
     >
       <body
