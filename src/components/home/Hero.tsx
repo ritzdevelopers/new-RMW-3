@@ -2,7 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { ButtonIcon } from "@/components/layout/ButtonIcon";
 import { Road } from "@/components/home/Road";
@@ -12,30 +12,161 @@ import { gsap, registerGsap } from "@/lib/gsap";
 registerGsap();
 gsap.registerPlugin(useGSAP);
 
-const OK_EN = "OK";
-const OK_HI = "ओके";
+const HERO_HEADLINES = [
+  { lines: ["Creative ओके", "Please"] },
+  { lines: ["Idea Ka Dhamaka,", "Brand Ka पटाखा"] },
+  { lines: ["Dil Se Desi,", "Kaam Mein", "World-Class"] },
+] as const;
+
+const TRUCK_PALETTES = [
+  ["#f0b450", "#f07828", "#dc2864"],
+  ["#dc2864", "#f07828", "#f0b450"],
+  ["#1a4db8", "#48c8e8", "#289848"],
+] as const;
+
+const HEADLINE_HOLD_MS = 4200;
+const HEADLINE_OUT_DURATION = 1.15;
+const HEADLINE_IN_DURATION = 1.25;
+const HEADLINE_LINE_STAGGER = 0.14;
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titleInnerRef = useRef<HTMLSpanElement>(null);
+  const headlineIndexRef = useRef(0);
+  const cyclingRef = useRef(false);
+  const awaitingEnterRef = useRef(false);
+  const onCycleCompleteRef = useRef<(() => void) | null>(null);
   const { ready, reduced } = useMotion();
-  const [okLabel, setOkLabel] = useState(OK_EN);
-  const [okSwapping, setOkSwapping] = useState(false);
+  const [headlineIndex, setHeadlineIndex] = useState(0);
+
+  const applyHeadlinePalette = useCallback((index: number, animate = false) => {
+    const title = titleRef.current;
+    if (!title) return;
+
+    const [c1, c2, c3] = TRUCK_PALETTES[index];
+    const vars = {
+      "--hero-title-c1": c1,
+      "--hero-title-c2": c2,
+      "--hero-title-c3": c3,
+    };
+
+    if (!animate || reduced) {
+      gsap.set(title, vars);
+      return;
+    }
+
+    gsap.to(title, {
+      ...vars,
+      duration: 1.35,
+      ease: "sine.inOut",
+    });
+  }, [reduced]);
+
+  const finishCycle = useCallback(() => {
+    cyclingRef.current = false;
+    onCycleCompleteRef.current?.();
+    onCycleCompleteRef.current = null;
+  }, []);
+
+  const cycleHeadline = useCallback(
+    (onSettled?: () => void) => {
+      const inner = titleInnerRef.current;
+      if (!inner || cyclingRef.current) return;
+
+      const nextIndex =
+        (headlineIndexRef.current + 1) % HERO_HEADLINES.length;
+      const lines = inner.querySelectorAll(".hero-title-line");
+
+      if (reduced) {
+        headlineIndexRef.current = nextIndex;
+        setHeadlineIndex(nextIndex);
+        applyHeadlinePalette(nextIndex);
+        onSettled?.();
+        return;
+      }
+
+      cyclingRef.current = true;
+      onCycleCompleteRef.current = onSettled ?? null;
+
+      gsap.to(lines, {
+        autoAlpha: 0,
+        y: -8,
+        duration: HEADLINE_OUT_DURATION,
+        ease: "sine.inOut",
+        stagger: { each: HEADLINE_LINE_STAGGER, from: "end" },
+        onComplete: () => {
+          headlineIndexRef.current = nextIndex;
+          awaitingEnterRef.current = true;
+          setHeadlineIndex(nextIndex);
+        },
+      });
+    },
+    [applyHeadlinePalette, reduced],
+  );
+
+  useLayoutEffect(() => {
+    if (!awaitingEnterRef.current) return;
+
+    awaitingEnterRef.current = false;
+    const inner = titleInnerRef.current;
+    if (!inner || reduced) {
+      finishCycle();
+      return;
+    }
+
+    applyHeadlinePalette(headlineIndex, true);
+
+    const lines = inner.querySelectorAll(".hero-title-line");
+    gsap.set(inner, { autoAlpha: 1, y: 0 });
+    gsap.set(lines, { autoAlpha: 0, y: 12, scale: 0.985 });
+
+    gsap.to(lines, {
+      autoAlpha: 1,
+      y: 0,
+      scale: 1,
+      duration: HEADLINE_IN_DURATION,
+      ease: "sine.out",
+      stagger: HEADLINE_LINE_STAGGER,
+      onComplete: finishCycle,
+    });
+  }, [headlineIndex, reduced, finishCycle, applyHeadlinePalette]);
 
   useEffect(() => {
-    let swapIn: number | undefined;
-    const swapAt = window.setTimeout(() => {
-      setOkSwapping(true);
-      swapIn = window.setTimeout(() => {
-        setOkLabel(OK_HI);
-        setOkSwapping(false);
-      }, 180);
-    }, 1000);
+    applyHeadlinePalette(0);
+  }, [applyHeadlinePalette]);
+
+  useEffect(() => {
+    if (!ready) return;
+
+    let cancelled = false;
+    let holdTimeout: number | undefined;
+
+    const queueNext = () => {
+      holdTimeout = window.setTimeout(() => {
+        if (cancelled) return;
+        cycleHeadline(() => {
+          if (!cancelled) queueNext();
+        });
+      }, HEADLINE_HOLD_MS);
+    };
+
+    queueNext();
 
     return () => {
-      window.clearTimeout(swapAt);
-      if (swapIn !== undefined) window.clearTimeout(swapIn);
+      cancelled = true;
+      if (holdTimeout !== undefined) window.clearTimeout(holdTimeout);
     };
-  }, []);
+  }, [ready, cycleHeadline]);
+
+  useGSAP(
+    () => {
+      const inner = titleInnerRef.current;
+      if (!inner || !ready) return;
+      gsap.set(inner, { autoAlpha: 1, y: 0 });
+    },
+    { scope: titleInnerRef, dependencies: [ready, reduced] },
+  );
 
   useGSAP(
     () => {
@@ -113,17 +244,24 @@ export function Hero() {
             </span>
             <span>India</span>
           </p>
-          <h1 data-hero-item className="hero-title">
-            <span className="hero-title-line">
-              Creative{" "}
-              <span
-                className={`hero-title-ok${okSwapping ? " is-swapping" : ""}`}
-                lang={okLabel === OK_HI ? "hi" : "en"}
-              >
-                {okLabel}
+          <h1
+            ref={titleRef}
+            data-hero-item
+            className="hero-title"
+            data-headline={headlineIndex}
+          >
+            <span className="hero-title-viewport" aria-live="polite">
+              <span ref={titleInnerRef} className="hero-title-inner">
+                {HERO_HEADLINES[headlineIndex].lines.map((line, lineIndex) => (
+                  <span
+                    key={`${headlineIndex}-${lineIndex}`}
+                    className="hero-title-line"
+                  >
+                    {line}
+                  </span>
+                ))}
               </span>
             </span>
-            <span className="hero-title-line">Please</span>
           </h1>
           <p data-hero-item className="hero-lede">
             We turn business problems into ideas that travel—from brand and

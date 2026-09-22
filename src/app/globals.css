@@ -8,6 +8,16 @@
   --accent: #db023d;
   --ink: #111318;
   --line: rgba(20, 21, 28, 0.12);
+  /* Sampled from hero truck art */
+  --truck-yellow: #f0b450;
+  --truck-orange: #f07828;
+  --truck-pink: #dc2864;
+  --truck-blue: #1a4db8;
+  --truck-cyan: #48c8e8;
+  --truck-green: #289848;
+  --hero-title-c1: var(--truck-yellow);
+  --hero-title-c2: var(--truck-orange);
+  --hero-title-c3: var(--truck-pink);
   --hero-fill: linear-gradient(
     135deg,
     #ceb9ec 0%,
@@ -266,8 +276,8 @@ body {
   justify-content: center;
   width: 699px;
   max-width: 100%;
-  min-height: 164px;
-  height: auto;
+  min-height: calc(82px * 3);
+  height: calc(82px * 3);
   margin: 0;
   font-family: var(--font-quicksand), Quicksand, sans-serif;
   font-weight: 700;
@@ -277,12 +287,17 @@ body {
   letter-spacing: 0;
   vertical-align: middle;
   text-transform: uppercase;
-  background: linear-gradient(90deg, #6f1f8c 0%, #d94d22 50%, #ca0435 100%);
+  background: linear-gradient(
+    92deg,
+    var(--hero-title-c1) 0%,
+    var(--hero-title-c2) 48%,
+    var(--hero-title-c3) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0px 4px 4px #00000040);
+  filter: drop-shadow(0 3px 10px rgb(240 120 40 / 22%));
   opacity: 1;
 }
 
@@ -293,25 +308,38 @@ body {
 
 .hero-title-line {
   display: block;
+  white-space: nowrap;
+  transform-origin: left center;
+  will-change: transform, opacity;
 }
 
-.hero-title-ok {
-  display: inline-block;
-  min-width: 1.15em;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+.hero-title-viewport {
+  display: block;
+  overflow: hidden;
+  height: calc(82px * 3);
 }
 
-.hero-title-ok.is-swapping {
-  opacity: 0;
-  transform: translateY(0.12em);
+.hero-title-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(82px * 3);
+  will-change: transform, opacity;
 }
 
 @media (max-width: 860px) {
   .hero-title {
     width: auto;
-    height: auto;
+    min-height: calc(1.1em * 3);
+    height: calc(1.1em * 3);
     font-size: clamp(2.4rem, 11vw, 75px);
     line-height: 1.1;
+  }
+
+  .hero-title-viewport,
+  .hero-title-inner {
+    min-height: calc(1.1em * 3);
+    height: calc(1.1em * 3);
   }
 }
 
