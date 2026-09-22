@@ -273,17 +273,17 @@ body {
 .hero-title {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   width: 699px;
   max-width: 100%;
-  min-height: calc(82px * 3);
-  height: calc(82px * 3);
+  min-height: 0;
+  height: auto;
   margin: 0;
   font-family: var(--font-quicksand), Quicksand, sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 75px;
-  line-height: 82px;
+  font-size: 58px;
+  line-height: 1.08;
   letter-spacing: 0;
   vertical-align: middle;
   text-transform: uppercase;
@@ -316,30 +316,30 @@ body {
 .hero-title-viewport {
   display: block;
   overflow: hidden;
-  height: calc(82px * 3);
+  height: auto;
 }
 
 .hero-title-inner {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: calc(82px * 3);
+  justify-content: flex-start;
+  min-height: 0;
   will-change: transform, opacity;
 }
 
 @media (max-width: 860px) {
   .hero-title {
     width: auto;
-    min-height: calc(1.1em * 3);
-    height: calc(1.1em * 3);
-    font-size: clamp(2.4rem, 11vw, 75px);
+    min-height: 0;
+    height: auto;
+    font-size: clamp(1.85rem, 8.5vw, 58px);
     line-height: 1.1;
   }
 
   .hero-title-viewport,
   .hero-title-inner {
-    min-height: calc(1.1em * 3);
-    height: calc(1.1em * 3);
+    min-height: 0;
+    height: auto;
   }
 }
 
@@ -3885,16 +3885,16 @@ body {
   }
 
   .hero-title {
-    font-size: clamp(1.9rem, 8.6vw, 75px);
-    line-height: 1.12;
-    min-height: calc(1.12em * 3);
-    height: calc(1.12em * 3);
+    font-size: clamp(1.7rem, 8vw, 58px);
+    line-height: 1.05;
+    min-height: 0;
+    height: auto;
   }
 
   .hero-title-viewport,
   .hero-title-inner {
-    min-height: calc(1.12em * 3);
-    height: calc(1.12em * 3);
+    min-height: 0;
+    height: auto;
   }
 
   .hero-lede {

@@ -1,12 +1,9 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useMotion } from "@/components/providers/MotionProvider";
-import { ButtonIcon } from "@/components/layout/ButtonIcon";
 import { Road } from "@/components/home/Road";
-import { TransitionLink } from "@/components/motion/TransitionLink";
 import { gsap, registerGsap } from "@/lib/gsap";
 
 registerGsap();
@@ -267,16 +264,6 @@ export function Hero() {
             We turn business problems into ideas that travel—from brand and
             campaign to media, digital, film, 3D and AI.
           </p>
-          <div data-hero-item className="hero-actions">
-            <TransitionLink href="/work" className="btn btn-hot">
-              See the work
-              <ButtonIcon name="arrow" />
-            </TransitionLink>
-            <Link href="/#start-a-project" className="btn btn-ink">
-              Start a project
-              <ButtonIcon name="plus" />
-            </Link>
-          </div>
         </div>
 
         <div className="hero-visual">
