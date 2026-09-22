@@ -16,11 +16,14 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="proof-pin">
-        <Ticker />
-        <Credentials />
+      {/* One pinned shell: Ideas That Travel on top, Route filling the rest — no body gradient gap. */}
+      <div className="proof-route">
+        <div className="proof-pin">
+          <Ticker />
+          <Credentials />
+        </div>
+        <Route />
       </div>
-      <Route />
       <Engines />
       <Growth />
       <Roadbook />
