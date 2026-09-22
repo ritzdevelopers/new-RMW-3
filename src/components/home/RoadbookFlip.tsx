@@ -22,6 +22,10 @@ const PAGE_WIDTH = 440;
 const PAGE_HEIGHT = 580;
 const PAGE_RATIO = PAGE_HEIGHT / PAGE_WIDTH;
 
+/* Below this viewport width a two-page spread is too small to read, so the
+   book flips as a single portrait page instead. */
+const PORTRAIT_MAX_VW = 640;
+
 function pageIndex(data: FlipEvent["data"]) {
   if (typeof data === "number") return data;
   if (typeof data === "object" && data) return data.page;
@@ -35,14 +39,19 @@ function softenAll(book: PageFlip) {
   }
 }
 
+function isPortraitViewport() {
+  return window.matchMedia(`(max-width: ${PORTRAIT_MAX_VW}px)`).matches;
+}
+
 function measurePage(box: HTMLElement) {
   const availW = box.clientWidth;
   const availH = box.clientHeight;
+  const portrait = isPortraitViewport();
   if (availW < 40 || availH < 40) {
-    return { width: PAGE_WIDTH, height: PAGE_HEIGHT, ready: false };
+    return { width: PAGE_WIDTH, height: PAGE_HEIGHT, ready: false, portrait };
   }
 
-  let width = Math.min(PAGE_WIDTH, Math.floor(availW / 2));
+  let width = Math.min(PAGE_WIDTH, Math.floor(portrait ? availW : availW / 2));
   let height = Math.round(width * PAGE_RATIO);
 
   if (height > Math.min(PAGE_HEIGHT, availH)) {
@@ -54,6 +63,7 @@ function measurePage(box: HTMLElement) {
     width: Math.max(1, width),
     height: Math.max(1, height),
     ready: true,
+    portrait,
   };
 }
 
@@ -92,10 +102,18 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
 
     const lastIndex = roadbookPages.length - 1;
 
-    const syncCoverClass = (index: number, pageWidth: number) => {
+    const syncCoverClass = (
+      index: number,
+      pageWidth: number,
+      portrait: boolean,
+    ) => {
       wrap.classList.toggle("is-cover", index === 0);
       wrap.classList.toggle("is-back", index === lastIndex);
-      wrap.style.setProperty("--cover-shift", `${Math.round(pageWidth / 2)}px`);
+      // In portrait there is no spread to re-centre against the cover.
+      wrap.style.setProperty(
+        "--cover-shift",
+        portrait ? "0px" : `${Math.round(pageWidth / 2)}px`,
+      );
     };
 
     const destroyBook = () => {
@@ -112,11 +130,11 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
       const size = measurePage(wrap);
       if (!size.ready) return;
 
-      const key = `${size.width}x${size.height}`;
+      const key = `${size.width}x${size.height}:${size.portrait ? "p" : "l"}`;
       if (pageFlip && lastKey === key) {
         pageFlip.update();
         softenAll(pageFlip);
-        syncCoverClass(currentIndex, size.width);
+        syncCoverClass(currentIndex, size.width, size.portrait);
         return;
       }
 
@@ -139,7 +157,7 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
         maxShadowOpacity: 0.9,
         flippingTime: 1100,
         showCover: true,
-        usePortrait: false,
+        usePortrait: size.portrait,
         autoSize: false,
         startZIndex: 2,
         startPage: currentIndex,
@@ -155,7 +173,7 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
         if (!pageFlip) return;
         softenAll(pageFlip);
         currentIndex = pageIndex(event.data);
-        syncCoverClass(currentIndex, size.width);
+        syncCoverClass(currentIndex, size.width, size.portrait);
         onPageRef.current(currentIndex + 1);
       });
 
@@ -163,7 +181,7 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
         if (!pageFlip) return;
         softenAll(pageFlip);
         currentIndex = pageIndex(event.data);
-        syncCoverClass(currentIndex, size.width);
+        syncCoverClass(currentIndex, size.width, size.portrait);
         onPageRef.current(currentIndex + 1);
       });
 
@@ -175,7 +193,7 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
 
       pageFlip.loadFromHTML(createPages());
       softenAll(pageFlip);
-      syncCoverClass(currentIndex, size.width);
+      syncCoverClass(currentIndex, size.width, size.portrait);
 
       onApiRef.current({
         next: () => pageFlip?.flipNext("bottom"),

@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ButtonIcon } from "@/components/layout/ButtonIcon";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { TransitionLink } from "@/components/motion/TransitionLink";
@@ -20,6 +20,32 @@ export function Header() {
   const pathname = usePathname();
   const rootRef = useRef<HTMLElement>(null);
   const { ready, reduced } = useMotion();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close the mobile menu on route change and when the viewport grows
+  // back into the desktop nav breakpoint.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const media = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (media.matches) setMenuOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    media.addEventListener("change", onChange);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      media.removeEventListener("change", onChange);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   useGSAP(
     () => {
@@ -53,7 +79,7 @@ export function Header() {
 
   return (
     <header ref={rootRef} className="site-header absolute top-0 right-0 left-0 z-50">
-      <div className="flex items-center justify-between gap-4 px-5 py-5 md:px-10 md:py-6">
+      <div className="site-header-bar flex items-center justify-between gap-4 px-5 py-5 md:px-10 md:py-6">
         <Magnetic>
           <TransitionLink href="/" className="flex items-center gap-2" aria-label={site.fullName}>
             <BrandMark />
@@ -76,10 +102,43 @@ export function Header() {
           ))}
         </nav>
 
-        <Link href="/#start-a-project" className="btn btn-ink">
-          Start a project
-          <ButtonIcon name="plus" />
-        </Link>
+        <div className="site-header-actions">
+          <Link href="/#start-a-project" className="btn btn-ink">
+            Start a project
+            <ButtonIcon name="plus" />
+          </Link>
+
+          <button
+            type="button"
+            className={cn("site-nav-toggle", menuOpen && "is-open")}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="site-nav-mobile"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+
+        {menuOpen ? (
+          <nav id="site-nav-mobile" className="site-nav-mobile" aria-label="Mobile">
+            {site.nav.map((item) => (
+              <TransitionLink
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "site-nav-link",
+                  pathname === item.href && "is-active",
+                )}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </TransitionLink>
+            ))}
+          </nav>
+        ) : null}
       </div>
     </header>
   );

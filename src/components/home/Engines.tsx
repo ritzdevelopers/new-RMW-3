@@ -74,6 +74,7 @@ export function Engines() {
 
   return (
     <section ref={rootRef} className="engines" aria-label="Capabilities">
+      <div className="engines-strip" aria-hidden />
       <div className="engines-inner">
         <h2 className="engines-title">{site.engines.title}</h2>
 

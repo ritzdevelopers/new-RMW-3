@@ -1314,16 +1314,31 @@ body {
 .engines {
   --road-h: 88px;
   --lamp-h: 0px;
+  --engines-strip-h: 36px;
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100svh;
   max-height: 100svh;
   box-sizing: border-box;
-  background: #ffffff;
+  background: linear-gradient(228.88deg, #fff8ee 4.05%, #f8ead5 67.16%);
   color: #0b1120;
-  padding: 5.25rem 0 0;
+  padding: 0;
   overflow: hidden;
+}
+
+.engines-strip {
+  flex: 0 0 var(--engines-strip-h);
+  height: var(--engines-strip-h);
+  overflow: hidden;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  background-image: url("/s4/paisley-strip.png");
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: auto 100%;
 }
 
 .engines-inner {
@@ -1333,7 +1348,7 @@ body {
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 80px 0.4rem;
+  padding: 3.85rem 80px 0.4rem;
 }
 
 .engines-title {
@@ -1451,7 +1466,6 @@ body {
   width: auto;
   max-width: 100%;
   object-fit: contain;
-  mix-blend-mode: lighten;
 }
 
 .engines-cargo {
@@ -2706,7 +2720,7 @@ body {
 
 @media (max-width: 760px) {
   .engines-inner {
-    padding: 0 1.25rem 1.5rem;
+    padding: 2.75rem 1.25rem 1.5rem;
   }
 
   .engines-title {
@@ -3715,5 +3729,496 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .site-footer-truck {
     will-change: auto;
+  }
+}
+
+/* =====================================================================
+   Responsive — tablet & mobile only.
+   Every rule below is scoped to max-width queries (≤1024px) so the
+   desktop layout above stays exactly as designed.
+   ===================================================================== */
+
+/* ---------- Mobile nav (header) ---------- */
+.site-nav-toggle {
+  display: none;
+}
+
+.site-nav-mobile {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .site-header-bar {
+    position: relative;
+  }
+
+  .site-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .site-nav-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: #ffffff;
+    box-shadow: 0px 2px 4px -1px #0000001a;
+    cursor: pointer;
+  }
+
+  .site-nav-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--ink);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .site-nav-toggle.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .site-nav-toggle.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-nav-toggle.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .site-nav-mobile {
+    position: absolute;
+    top: calc(100% - 6px);
+    left: 1.25rem;
+    right: 1.25rem;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgb(20 21 28 / 0.18);
+  }
+
+  .site-nav-mobile .site-nav-link {
+    height: auto;
+    padding: 12px 14px;
+    border-radius: 4px;
+  }
+
+  .site-nav-mobile .site-nav-link.is-active {
+    background: #f4f2ef;
+  }
+
+  .site-nav-mobile .btn {
+    margin-top: 6px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header-bar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .site-header-actions .btn-ink {
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 12px;
+  }
+}
+
+/* ---------- Hero ---------- */
+@media (max-width: 979px) {
+  /* Fixed-width copy (576px lede, nowrap title lines) was inflating the
+     single grid track past the viewport on phones. */
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-copy,
+  .hero-visual {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hero-title,
+  .hero-lede {
+    width: 100%;
+  }
+
+  .hero-scene {
+    width: 100%;
+  }
+
+  .hero-visual {
+    justify-content: center;
+  }
+
+  .hero-truck {
+    transform: scale(1.18);
+  }
+
+  .hero-rig {
+    transform: translateY(18px);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 6.75rem;
+  }
+
+  .hero-grid {
+    gap: 1.5rem 0;
+  }
+
+  .hero-title {
+    font-size: clamp(1.9rem, 8.6vw, 75px);
+    line-height: 1.12;
+    min-height: calc(1.12em * 3);
+    height: calc(1.12em * 3);
+  }
+
+  .hero-title-viewport,
+  .hero-title-inner {
+    min-height: calc(1.12em * 3);
+    height: calc(1.12em * 3);
+  }
+
+  .hero-lede {
+    margin-top: 1rem;
+    font-size: 17px;
+    line-height: 25px;
+  }
+
+  .hero-actions {
+    margin-top: 1.5rem;
+  }
+
+  .hero-truck {
+    transform: scale(1.08);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions .btn,
+  .hero-actions .btn-hot {
+    width: 100%;
+  }
+}
+
+/* ---------- Ideas That Travel / credentials ---------- */
+@media (max-width: 640px) {
+  .proof-edge-label-gold {
+    font-size: 14px;
+  }
+
+  .proof-stat-value {
+    font-size: 40px;
+  }
+}
+
+/* ---------- Route (Insight » Idea » Impact) ---------- */
+@media (max-width: 900px) {
+  .route-mask-media {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .route-mask-poster {
+    max-height: 36svh;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 640px) {
+  .route-mask-media {
+    gap: 1rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .route-mask-poster {
+    max-height: 30svh;
+  }
+
+  .route-mask-title {
+    font-size: 22px;
+  }
+
+  .route-mask-lede {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .route-mask-stops li {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .route-mask-hint {
+    font-size: 1.05rem;
+  }
+}
+
+/* ---------- One agency. Three engines. ---------- */
+@media (max-width: 1024px) {
+  .engines-inner {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .engines {
+    --engines-strip-h: 28px;
+    height: auto;
+    max-height: none;
+    min-height: 100svh;
+    padding-top: 0;
+  }
+
+  .engines-inner {
+    padding-top: 2.75rem;
+  }
+
+  /* Tabs become one horizontally scrollable row instead of eating
+     half the viewport as a wrapped grid. */
+  .engines-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+    padding: 0 1.25rem 6px;
+    scroll-snap-type: x proximity;
+  }
+
+  .engines-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .engines-tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    white-space: nowrap;
+  }
+
+  .engines-lede {
+    -webkit-line-clamp: 4;
+  }
+
+  .engines-stage {
+    flex: 0 0 auto;
+    margin-top: 1.5rem;
+  }
+
+  /* Give the truck a real height; on desktop it fills leftover flex
+     space, which collapses to nothing once the tabs wrap. */
+  .engines-rig {
+    flex: 0 0 auto;
+    height: clamp(170px, 48vw, 300px);
+    min-height: 170px;
+  }
+
+  .engines-vehicle {
+    height: 100%;
+  }
+}
+
+/* ---------- Growth ---------- */
+@media (max-width: 640px) {
+  .growth-title {
+    font-size: 26px;
+  }
+
+  .growth-list li {
+    height: auto;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .growth-btn {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+/* ---------- Roadbook ---------- */
+@media (max-width: 640px) {
+  .roadbook {
+    padding: 2.75rem 1rem 3.25rem;
+  }
+
+  .roadbook-stage {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .roadbook-viewport {
+    grid-column: 1;
+  }
+
+  .roadbook-stage > .roadbook-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 6;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .roadbook-stage > .roadbook-nav:hover:not(:disabled) {
+    transform: translateY(-50%) scale(1.04);
+  }
+
+  .roadbook-stage > .roadbook-nav:first-child {
+    left: -6px;
+  }
+
+  .roadbook-stage > .roadbook-nav:last-child {
+    right: -6px;
+  }
+
+  .roadbook-chevron {
+    width: 18px;
+    height: 18px;
+  }
+
+  .roadbook-flip-wrap.is-cover .stf__parent,
+  .roadbook-flip-wrap.is-back .stf__parent {
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+}
+
+/* ---------- Work that moved something ---------- */
+@media (max-width: 480px) {
+  .moved-title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .moved-stat-value {
+    font-size: 30px;
+  }
+}
+
+/* ---------- Reviews ---------- */
+@media (max-width: 640px) {
+  .reviews {
+    min-height: 0;
+    padding: 7rem 1rem 3.5rem;
+  }
+
+  .reviews-title {
+    font-size: 40px;
+  }
+
+  .reviews-card.is-center,
+  .reviews-card-featured {
+    padding: 24px 20px 20px;
+  }
+}
+
+/* ---------- Awards ---------- */
+@media (max-width: 480px) {
+  .awards-title {
+    font-size: 30px;
+  }
+
+  .awards-heading {
+    font-size: 18px;
+  }
+
+  .awards-copy {
+    font-size: 13px;
+  }
+}
+
+/* ---------- News ---------- */
+@media (max-width: 480px) {
+  .news-title {
+    font-size: 30px;
+    line-height: 34px;
+  }
+
+  .news-card-body {
+    min-height: 0;
+    padding: 18px 18px 24px;
+  }
+
+  .news-card-go {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ---------- Highways / FAQ ---------- */
+@media (max-width: 640px) {
+  .highways-title {
+    font-size: clamp(34px, 10vw, 44px);
+  }
+
+  .highways-card {
+    width: 100%;
+  }
+
+  .highways-truck {
+    margin-top: -1.5rem;
+    margin-left: 0;
+  }
+
+  .highways-faq-trigger {
+    grid-template-columns: 28px minmax(0, 1fr) 30px;
+    column-gap: 8px;
+  }
+}
+
+/* ---------- Start a project / audit ---------- */
+@media (max-width: 480px) {
+  .audit-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .audit-submit {
+    width: 100%;
+  }
+}
+
+/* ---------- Footer ---------- */
+@media (max-width: 720px) {
+  .site-footer-intro,
+  .site-footer-title {
+    width: 100%;
+  }
+
+  .site-footer-title {
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .site-footer-title-row {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
