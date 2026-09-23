@@ -168,7 +168,7 @@ export function Route() {
         0.16,
       );
 
-      // Slide Ideas That Travel off so Impact owns the full viewport.
+      // Slide credentials off so Impact owns the full viewport; ticker stays put.
       if (proofPin) {
         tl.to(
           proofPin,

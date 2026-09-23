@@ -14,7 +14,7 @@ const LOGO_REPEAT = 4;
 
 /**
  * Visual shell for credentials. Scroll animation for "Ideas That Travel"
- * is driven by Route on the shared `.proof-route` pin so both scrub together.
+ * is driven by Route on `.proof-pin` so the ticker strip stays visible.
  */
 export function Credentials() {
   const rootRef = useRef<HTMLElement>(null);

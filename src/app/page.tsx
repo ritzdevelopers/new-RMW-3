@@ -16,10 +16,10 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* One pinned shell: Ideas That Travel on top, Route filling the rest — no body gradient gap. */}
+      {/* One pinned shell: ticker stays visible; credentials slide off; Route fills the rest. */}
       <div className="proof-route">
+        <Ticker />
         <div className="proof-pin">
-          <Ticker />
           <Credentials />
         </div>
         <Route />

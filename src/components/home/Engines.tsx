@@ -10,6 +10,8 @@ import { site } from "@/lib/site";
 registerGsap();
 gsap.registerPlugin(useGSAP);
 
+const ENGINE_TAB_ROWS = [5, 4] as const;
+
 export function Engines() {
   const rootRef = useRef<HTMLElement>(null);
   const cargoRef = useRef<HTMLImageElement>(null);
@@ -79,22 +81,39 @@ export function Engines() {
         <h2 className="engines-title">{site.engines.title}</h2>
 
         <div className="engines-tabs" role="tablist">
-          {site.engines.items.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              aria-selected={index === active}
-              className={
-                index === active
-                  ? "engines-tab engines-tab-active"
-                  : "engines-tab"
-              }
-              onClick={() => setActive(index)}
-            >
-              {item.label}
-            </button>
-          ))}
+          {ENGINE_TAB_ROWS.map((count, rowIndex) => {
+            const start = ENGINE_TAB_ROWS.slice(0, rowIndex).reduce(
+              (total, rowCount) => total + rowCount,
+              0,
+            );
+
+            return (
+              <div key={rowIndex} className="engines-tabs-row">
+                {site.engines.items
+                  .slice(start, start + count)
+                  .map((item, index) => {
+                    const tabIndex = start + index;
+
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={tabIndex === active}
+                        className={
+                          tabIndex === active
+                            ? "engines-tab engines-tab-active"
+                            : "engines-tab"
+                        }
+                        onClick={() => setActive(tabIndex)}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+              </div>
+            );
+          })}
         </div>
 
         <div ref={copyRef} className="engines-copy">
@@ -137,8 +156,8 @@ export function Engines() {
         </div>
 
         <Road className="engines-road" />
-        <div className="ticker-pattern engines-pattern" />
       </div>
+      <div className="engines-strip engines-strip-bottom" aria-hidden />
     </section>
   );
 }

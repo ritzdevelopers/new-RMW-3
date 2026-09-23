@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ButtonIcon } from "@/components/layout/ButtonIcon";
-import { Magnetic } from "@/components/motion/Magnetic";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/cn";
@@ -80,25 +79,22 @@ export function Header() {
   return (
     <header ref={rootRef} className="site-header absolute top-0 right-0 left-0 z-50">
       <div className="site-header-bar flex items-center justify-between gap-4 px-5 py-5 md:px-10 md:py-6">
-        <Magnetic>
-          <TransitionLink href="/" className="flex items-center gap-2" aria-label={site.fullName}>
-            <BrandMark />
-          </TransitionLink>
-        </Magnetic>
+        <TransitionLink href="/" className="flex items-center gap-2" aria-label={site.fullName}>
+          <BrandMark />
+        </TransitionLink>
 
         <nav className="site-nav">
           {site.nav.map((item) => (
-            <Magnetic key={item.href} strength={0.2}>
-              <TransitionLink
-                href={item.href}
-                className={cn(
-                  "site-nav-link",
-                  pathname === item.href && "is-active",
-                )}
-              >
-                {item.label}
-              </TransitionLink>
-            </Magnetic>
+            <TransitionLink
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "site-nav-link",
+                pathname === item.href && "is-active",
+              )}
+            >
+              {item.label}
+            </TransitionLink>
           ))}
         </nav>
 
