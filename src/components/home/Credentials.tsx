@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 registerGsap();
 gsap.registerPlugin(useGSAP);
 
-const LOGO_REPEAT = 4;
+const LOGO_REPEAT = 1;
 
 /**
  * Visual shell for credentials. Scroll animation for "Ideas That Travel"
@@ -97,11 +97,10 @@ export function Credentials() {
 
         <div className="proof-logos">
           <div className="proof-logos-track" aria-hidden>
-            {[...partners, ...partners].map((partner, index) => (
-              <figure key={`${partner.name}-${index}`} className="proof-logo">
+            {[...partners, ...partners].map((src, index) => (
+              <figure key={`${src}-${index}`} className="proof-logo">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={partner.src} alt="" width={78} height={27} />
-                <figcaption>{partner.name}</figcaption>
+                <img src={src} alt="" />
               </figure>
             ))}
           </div>

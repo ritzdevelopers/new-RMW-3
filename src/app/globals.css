@@ -1103,29 +1103,19 @@ body {
 
 .proof-logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   margin: 0;
-  min-width: 110px;
-  text-align: center;
+  height: 72px;
+  background: transparent;
 }
 
 .proof-logo img {
   display: block;
-  width: 78px;
-  height: 27px;
+  width: auto;
+  height: 56px;
+  max-width: 156px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-}
-
-.proof-logo figcaption {
-  max-width: 9.5rem;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.25;
-  color: var(--proof-gold);
 }
 
 @media (max-width: 640px) {
