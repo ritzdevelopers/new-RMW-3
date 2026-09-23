@@ -307,7 +307,7 @@ export function StartProject() {
         </form>
       </div>
 
-      <div className="audit-road" aria-hidden />
+      {/* <div className="audit-road" aria-hidden /> */}
     </section>
   );
 }
