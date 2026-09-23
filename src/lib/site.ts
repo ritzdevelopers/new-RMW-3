@@ -135,7 +135,8 @@ export const site = {
     slides: [
       {
         id: "digital",
-        title: "Digital marketing strategies that\ndrive growth",
+        title: "Digital marketing strategies\nthat drive growth",
+        image: "/s5/banner-hoarding.png",
         items: [
           "SEO (Search Engine Optimization)",
           "Social Media Services",
@@ -145,7 +146,7 @@ export const site = {
       },
       {
         id: "creative",
-        title: "Creative campaigns people actually remember",
+        title: "Creative campaigns people\nactually remember",
         items: [
           "Brand platforms and campaigns",
           "Films and motion design",
@@ -155,7 +156,7 @@ export const site = {
       },
       {
         id: "print",
-        title: "Print and OOH that still stops a reader",
+        title: "Print and OOH that still\nstops a reader",
         items: [
           "Newspapers and magazines",
           "Outdoor and transit media",
@@ -165,7 +166,7 @@ export const site = {
       },
       {
         id: "content",
-        title: "Content and web built to convert",
+        title: "Content and web built\nto convert",
         items: [
           "Always-on content engines",
           "Websites and landing systems",
@@ -175,7 +176,7 @@ export const site = {
       },
       {
         id: "voices",
-        title: "Voices that can carry the idea",
+        title: "Voices that can carry\nthe idea",
         items: [
           "Celebrity endorsements",
           "Influencer partnerships",
@@ -235,6 +236,26 @@ export const site = {
         year: "2008",
         heading: "Foundation",
         copy: "Ritz Media World launched with a mission to reimagine brand communication for India's growth markets.",
+      },
+      {
+        year: "2012",
+        heading: "Innovation Leadership",
+        copy: "Pioneered centrespread storytelling in Hindustan Times, setting new creative benchmarks for print.",
+      },
+      {
+        year: "2016",
+        heading: "Digital Expansion",
+        copy: "Scaled into 360° digital marketing, unifying performance, content, and automation for premium brands.",
+      },
+      {
+        year: "2020",
+        heading: "Premium Positioning",
+        copy: "Strengthened premium brand partnerships and elevated positioning across high-impact campaigns.",
+      },
+      {
+        year: "2026",
+        heading: "AI-Powered 3D Rendering at 5X",
+        copy: "Delivering next-gen AI-powered 3D rendering at 5X speed — transforming vision into photoreal reality faster than ever.",
       },
     ],
   },
@@ -302,7 +323,9 @@ export const site = {
   startProject: {
     kicker: "Start a Project",
     title: "Get A Free SEO And Digital Audit For Your Brand",
+    formTitle: "Shuru Karein – It's Free",
     cta: "Get My Free Audit",
+    pills: ["Branding", "SEO", "Social Media", "Performance"],
     services: [
       "Digital Marketing",
       "Creative Services",

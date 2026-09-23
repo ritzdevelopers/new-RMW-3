@@ -39,16 +39,6 @@ export function Engines() {
           scrollTrigger: { trigger: root, start: "top 72%" },
         },
       );
-
-      gsap.to(rig, {
-        y: -2,
-        rotation: 0.28,
-        transformOrigin: "50% 100%",
-        duration: 0.55,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
     },
     { scope: rootRef, dependencies: [ready, reduced] },
   );
@@ -76,7 +66,6 @@ export function Engines() {
 
   return (
     <section ref={rootRef} className="engines" aria-label="Capabilities">
-      <div className="engines-strip" aria-hidden />
       <div className="engines-inner">
         <h2 className="engines-title">{site.engines.title}</h2>
 
@@ -128,10 +117,10 @@ export function Engines() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="engines-truck"
-            src="/s4/image 29.png"
+            src="/s4/engines-truck.png"
             alt=""
-            width={1600}
-            height={820}
+            width={1024}
+            height={472}
           />
           <div className="engines-cargo">
             {/* eslint-disable-next-line @next/next/no-img-element */}

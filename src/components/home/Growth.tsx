@@ -54,24 +54,30 @@ export function Growth() {
 
   return (
     <section ref={rootRef} className="growth" aria-label="Growth strategies">
+      <div className="ticker-pattern growth-pattern" aria-hidden />
       <div className="growth-body">
         <div className="growth-art" aria-hidden>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/s5/peacock.png" alt="" width={900} height={1200} />
+          <img src="/s5/highway.jpg" alt="" width={1024} height={576} />
         </div>
-        <div className="growth-wedge" aria-hidden />
+
+        <div data-growth-item className="growth-portrait">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            key={slide.id}
+            src={slide.image ?? "/s5/banner-hoarding.png"}
+            alt="Digital marketing"
+            width={1024}
+            height={682}
+          />
+        </div>
+
+        <div className="growth-road" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/s5/highway.jpg" alt="" width={1024} height={576} />
+        </div>
 
         <div className="growth-inner">
-          <div data-growth-item className="growth-portrait">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/s5/Frame 105339.png"
-              alt="Digital marketing"
-              width={800}
-              height={800}
-            />
-          </div>
-
           <div ref={copyRef} className="growth-copy">
             <h2 data-growth-item className="growth-title">
               {slide.title}
@@ -113,7 +119,7 @@ export function Growth() {
           </div>
         </div>
       </div>
-      <div className="ticker-pattern growth-pattern" />
+      <div className="ticker-pattern growth-pattern" aria-hidden />
     </section>
   );
 }

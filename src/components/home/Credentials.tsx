@@ -1,7 +1,7 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { CountUp } from "@/components/motion/CountUp";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { gsap, registerGsap } from "@/lib/gsap";
@@ -48,6 +48,24 @@ export function Credentials() {
     },
     { scope: rootRef, dependencies: [ready, reduced] },
   );
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || reduced) return;
+
+    const logos = root.querySelector<HTMLElement>(".proof-logos");
+    if (!logos) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        logos.classList.toggle("is-paused", !entry.isIntersecting);
+      },
+      { rootMargin: "80px 0px" },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [reduced]);
 
   const partners = Array.from(
     { length: LOGO_REPEAT },

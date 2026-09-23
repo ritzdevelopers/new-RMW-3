@@ -78,8 +78,8 @@ export function News() {
                 <img
                   src={post.image}
                   alt=""
-                  width={900}
-                  height={560}
+                  width={1280}
+                  height={720}
                 />
               </div>
               <div className="news-card-body">

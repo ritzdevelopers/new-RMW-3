@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
-import { useEffect, useRef } from "react";
-import { gsap, registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { ReactLenis, useLenis } from "lenis/react";
+import { useEffect } from "react";
+import { registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { useMotion } from "@/components/providers/MotionProvider";
 
 registerGsap();
@@ -23,33 +23,16 @@ function LenisScrollTriggerBridge() {
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const { reduced } = useMotion();
-  const lenisRef = useRef<LenisRef>(null);
-
-  useEffect(() => {
-    if (reduced) return;
-
-    const update = (time: number) => {
-      lenisRef.current?.lenis?.raf(time * 1000);
-    };
-
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      gsap.ticker.remove(update);
-    };
-  }, [reduced]);
 
   if (reduced) return children;
 
   return (
     <ReactLenis
       root
-      ref={lenisRef}
       options={{
-        autoRaf: false,
-        lerp: 0.08,
-        duration: 1.35,
+        autoRaf: true,
+        lerp: 0.1,
+        duration: 1.2,
         smoothWheel: true,
         wheelMultiplier: 0.88,
         touchMultiplier: 1.05,

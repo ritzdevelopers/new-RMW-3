@@ -28,6 +28,7 @@ const HEADLINE_LINE_STAGGER = 0.14;
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const titleInnerRef = useRef<HTMLSpanElement>(null);
   const headlineIndexRef = useRef(0);
@@ -132,6 +133,26 @@ export function Hero() {
   useEffect(() => {
     applyHeadlinePalette(0);
   }, [applyHeadlinePalette]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const root = rootRef.current;
+    if (!video || !root || reduced) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [reduced]);
 
   useEffect(() => {
     if (!ready) return;
@@ -271,6 +292,7 @@ export function Hero() {
             <div className="hero-rig">
               <div className="hero-truck-wrap">
                 <video
+                  ref={videoRef}
                   className="hero-truck"
                   src="/hero-section/truck-drive.webm"
                   poster="/hero-section/truck-drive.png"
@@ -280,7 +302,7 @@ export function Hero() {
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   aria-label="RMW truck"
                 />
               </div>

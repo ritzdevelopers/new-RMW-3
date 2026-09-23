@@ -98,7 +98,7 @@ export function Route() {
           end: `+=${PIN_DISTANCE}`,
           pin: true,
           pinSpacing: true,
-          scrub: 0.65,
+          scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -149,8 +149,11 @@ export function Route() {
           duration: 0.78,
           onUpdate: () => {
             setRadius(mask.r);
-            if (mask.r >= MASK_OPEN - 0.5) clearMask();
-            else restoreMask();
+            if (mask.r >= MASK_OPEN - 0.5) {
+              clearMask();
+            } else {
+              restoreMask();
+            }
           },
         },
         0,
@@ -183,22 +186,19 @@ export function Route() {
         {
           duration: 0.22,
           onStart: clearMask,
-          onUpdate: clearMask,
         },
       );
 
-      ScrollTrigger.refresh();
-
-      let lastHeight = document.body.offsetHeight;
+      let lastHeight = shell.offsetHeight;
       let refreshId = 0;
       const observer = new ResizeObserver(() => {
-        const height = document.body.offsetHeight;
+        const height = shell.offsetHeight;
         if (Math.abs(height - lastHeight) < 2) return;
         lastHeight = height;
         window.clearTimeout(refreshId);
-        refreshId = window.setTimeout(() => ScrollTrigger.refresh(), 150);
+        refreshId = window.setTimeout(() => ScrollTrigger.refresh(), 200);
       });
-      observer.observe(document.body);
+      observer.observe(shell);
 
       return () => {
         window.clearTimeout(refreshId);

@@ -63,7 +63,7 @@ export function Moved() {
         </div>
       </div>
 
-      <div className="moved-ribbon" aria-hidden />
+      {/* <div className="moved-ribbon" aria-hidden /> */}
     </section>
   );
 }

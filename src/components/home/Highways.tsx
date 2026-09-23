@@ -61,7 +61,7 @@ export function Highways() {
 
             <div className="highways-truck" aria-hidden>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={data.truck} alt="" width={688} height={421} />
+              <img src={data.truck} alt="" width={1024} height={766} />
             </div>
           </div>
         </div>
