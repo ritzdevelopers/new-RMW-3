@@ -1461,7 +1461,6 @@ body {
   box-sizing: border-box;
   appearance: none;
   min-height: 44px;
-  border: 1px solid rgb(11 17 32 / 0.1);
   background: #ffffff;
   color: #0b1120;
   border-radius: 4px;
@@ -1671,7 +1670,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 4.5% clamp(40px, 3.2vw, 72px) 6% 56%;
+  padding: 9% clamp(40px, 3.2vw, 72px) 6% 56%;
 }
 
 .growth-portrait {
@@ -1840,7 +1839,7 @@ body {
   }
 
   .growth-inner {
-    padding-top: 4%;
+    padding-top: 8%;
     padding-left: 54%;
     padding-right: clamp(24px, 2.4vw, 40px);
   }
@@ -2356,7 +2355,8 @@ body {
 }
 
 .reviews-title {
-  top: clamp(3.5rem, 9vh, 5.75rem);
+  position: absolute;
+  top: calc(clamp(32px, 4vw, 56px) + 0.65rem);
   left: 0;
   right: 0;
   z-index: 3;
@@ -2571,10 +2571,6 @@ body {
 @media (max-width: 980px) {
   .reviews {
     padding: 8.5rem 1rem 4.25rem;
-  }
-
-  .reviews-title {
-    top: 4.25rem;
   }
 
   .reviews-stage {

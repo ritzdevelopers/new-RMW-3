@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ButtonIcon } from "@/components/layout/ButtonIcon";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/cn";
@@ -100,8 +99,7 @@ export function Header() {
 
         <div className="site-header-actions">
           <Link href="/#start-a-project" className="btn btn-ink">
-            Start a project
-            <ButtonIcon name="plus" />
+            Contact us
           </Link>
 
           <button
