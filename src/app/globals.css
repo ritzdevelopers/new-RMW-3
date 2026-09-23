@@ -222,13 +222,15 @@ body {
   align-items: end;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.25rem 3.5rem;
   width: 100%;
 }
 
 .hero-copy {
+  position: relative;
+  z-index: 4;
   max-width: 640px;
-  padding-bottom: 0.5rem;
+  padding-bottom: 2.75rem;
 }
 
 .hero-kicker {
@@ -274,7 +276,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 699px;
+  width: 100%;
   max-width: 100%;
   min-height: 0;
   height: auto;
@@ -403,7 +405,7 @@ body {
   width: 100%;
   aspect-ratio: 1280 / 720;
   margin-bottom: calc(var(--road-h) * -0.42);
-  transform: translateY(28px);
+  transform: translateY(96px);
   filter: drop-shadow(0 16px 20px rgba(40, 20, 60, 0.18));
 }
 
@@ -2759,7 +2761,7 @@ body {
   .hero-grid {
     grid-template-columns: 1.05fr 0.95fr;
     gap: 1rem 1rem;
-    padding: 0 2.5rem;
+    padding: 0 2.5rem 3.5rem;
   }
 
   .hero-copy {
@@ -3871,7 +3873,7 @@ body {
   }
 
   .hero-rig {
-    transform: translateY(18px);
+    transform: translateY(64px);
   }
 }
 
