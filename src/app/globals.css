@@ -3068,7 +3068,7 @@ body {
 
 .news-card-media {
   overflow: hidden;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1024 / 535;
   background: #0b1220;
 }
 

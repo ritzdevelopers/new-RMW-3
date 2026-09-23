@@ -299,19 +299,17 @@ export const site = {
     href: "/work",
     posts: [
       {
-        slug: "best-real-estate-creative-agency-india-2026",
-        title:
-          "Best Real Estate Creative Agency in India: Who Actually Delivers Results in 2026",
-        tags: ["Real Estate", "Brand Campaign", "Integrated Media"],
-        image: "/blog-section/image.png",
+        slug: "seo-friendly-website-from-scratch",
+        title: "How to Design an SEO Friendly Website from Scratch",
+        tags: ["SEO", "Web Design", "Digital"],
+        image: "/blog-section/seo-friendly-website.jpg",
         href: "/insights",
       },
       {
-        slug: "best-real-estate-creative-agency-india-2026-2",
-        title:
-          "Best Real Estate Creative Agency in India: Who Actually Delivers Results in 2026",
-        tags: ["Real Estate", "Brand Campaign", "Integrated Media"],
-        image: "/blog-section/image.png",
+        slug: "websites-fuel-business-growth",
+        title: "Beyond Design: How Powerful Websites Fuel Business Growth",
+        tags: ["Web Development", "Growth", "Digital"],
+        image: "/blog-section/websites-fuel-growth.jpg",
         href: "/insights",
       },
     ],
