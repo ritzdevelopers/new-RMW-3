@@ -32,13 +32,6 @@ function pageIndex(data: FlipEvent["data"]) {
   return 0;
 }
 
-function softenAll(book: PageFlip) {
-  const count = book.getPageCount();
-  for (let i = 0; i < count; i += 1) {
-    book.getPage(i).setDensity("soft");
-  }
-}
-
 function isPortraitViewport() {
   return window.matchMedia(`(max-width: ${PORTRAIT_MAX_VW}px)`).matches;
 }
@@ -68,10 +61,12 @@ function measurePage(box: HTMLElement) {
 }
 
 function createPages() {
-  return roadbookPages.map((page) => {
+  const last = roadbookPages.length - 1;
+  return roadbookPages.map((page, index) => {
     const el = document.createElement("div");
-    el.className = "roadbook-page";
-    el.dataset.density = "soft";
+    const hard = index === 0 || index === last;
+    el.className = hard ? "roadbook-page roadbook-page-cover" : "roadbook-page";
+    el.dataset.density = hard ? "hard" : "soft";
     const img = document.createElement("img");
     img.src = page.src;
     img.alt = page.title;
@@ -102,14 +97,19 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
 
     const lastIndex = roadbookPages.length - 1;
 
-    const syncCoverClass = (
+    const syncBookClass = (
       index: number,
       pageWidth: number,
+      pageHeight: number,
       portrait: boolean,
     ) => {
+      const closed = index === 0 || index === lastIndex;
       wrap.classList.toggle("is-cover", index === 0);
       wrap.classList.toggle("is-back", index === lastIndex);
-      // In portrait there is no spread to re-centre against the cover.
+      wrap.classList.toggle("is-open", !closed);
+      wrap.classList.toggle("is-portrait", portrait);
+      wrap.style.setProperty("--page-w", `${pageWidth}px`);
+      wrap.style.setProperty("--page-h", `${pageHeight}px`);
       wrap.style.setProperty(
         "--cover-shift",
         portrait ? "0px" : `${Math.round(pageWidth / 2)}px`,
@@ -133,8 +133,7 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
       const key = `${size.width}x${size.height}:${size.portrait ? "p" : "l"}`;
       if (pageFlip && lastKey === key) {
         pageFlip.update();
-        softenAll(pageFlip);
-        syncCoverClass(currentIndex, size.width, size.portrait);
+        syncBookClass(currentIndex, size.width, size.height, size.portrait);
         return;
       }
 
@@ -154,8 +153,8 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
         minHeight: size.height,
         maxHeight: size.height,
         drawShadow: true,
-        maxShadowOpacity: 0.9,
-        flippingTime: 1100,
+        maxShadowOpacity: 0.55,
+        flippingTime: 1200,
         showCover: true,
         usePortrait: size.portrait,
         autoSize: false,
@@ -164,36 +163,34 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
         mobileScrollSupport: true,
         swipeDistance: 24,
         clickEventForward: false,
-        useMouseEvents: false,
-        showPageCorners: false,
+        useMouseEvents: true,
+        showPageCorners: true,
         disableFlipByClick: true,
       });
 
       pageFlip.on("init", (event: FlipEvent) => {
         if (!pageFlip) return;
-        softenAll(pageFlip);
         currentIndex = pageIndex(event.data);
-        syncCoverClass(currentIndex, size.width, size.portrait);
+        syncBookClass(currentIndex, size.width, size.height, size.portrait);
         onPageRef.current(currentIndex + 1);
       });
 
       pageFlip.on("flip", (event: FlipEvent) => {
         if (!pageFlip) return;
-        softenAll(pageFlip);
         currentIndex = pageIndex(event.data);
-        syncCoverClass(currentIndex, size.width, size.portrait);
+        syncBookClass(currentIndex, size.width, size.height, size.portrait);
         onPageRef.current(currentIndex + 1);
       });
 
       pageFlip.on("changeState", (event: FlipEvent) => {
         if (event.data === "flipping") {
           wrap.classList.remove("is-cover", "is-back");
+          wrap.classList.add("is-open");
         }
       });
 
       pageFlip.loadFromHTML(createPages());
-      softenAll(pageFlip);
-      syncCoverClass(currentIndex, size.width, size.portrait);
+      syncBookClass(currentIndex, size.width, size.height, size.portrait);
 
       onApiRef.current({
         next: () => pageFlip?.flipNext("bottom"),
@@ -221,6 +218,14 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
 
   return (
     <div ref={wrapRef} className="roadbook-flip-wrap is-cover">
+      <div className="roadbook-shell" aria-hidden="true">
+        <span className="roadbook-board roadbook-board-left" />
+        <span className="roadbook-board roadbook-board-right" />
+        <span className="roadbook-thickness roadbook-thickness-left" />
+        <span className="roadbook-thickness roadbook-thickness-right" />
+        <span className="roadbook-gutter" />
+        <span className="roadbook-floor" />
+      </div>
       <div ref={hostRef} className="roadbook-host" />
     </div>
   );

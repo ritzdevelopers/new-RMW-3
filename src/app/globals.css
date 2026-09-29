@@ -584,8 +584,13 @@ body {
   animation: road-scroll 9s linear infinite;
 }
 
+.road.is-fast .road-world {
+  animation-duration: 3.1s;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .road.is-active .road-world {
+  .road.is-active .road-world,
+  .road.is-fast .road-world {
     animation: none;
   }
 }
@@ -1517,6 +1522,18 @@ body {
   letter-spacing: 0;
   text-transform: uppercase;
   color: #0b1120;
+  perspective: 900px;
+}
+
+.engines-title-line {
+  display: block;
+  overflow: hidden;
+  perspective: 900px;
+}
+
+.engines-char {
+  display: inline-block;
+  will-change: transform;
 }
 
 .engines-tabs {
@@ -1525,6 +1542,7 @@ body {
   align-items: flex-start;
   gap: 10px;
   margin: 0 0 0.65rem;
+  perspective: 900px;
 }
 
 .engines-tabs-row {
@@ -1550,12 +1568,19 @@ body {
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition:
+    background-color 0.38s ease,
+    color 0.38s ease,
+    box-shadow 0.38s ease;
 }
 
 .engines-tab-active {
   background: #0b1120;
   color: #ffffff;
   border-color: #0b1120;
+  box-shadow: 0 10px 22px rgb(11 17 32 / 0.22);
 }
 
 .engines-split {
@@ -1574,11 +1599,26 @@ body {
 }
 
 .engines-copy {
+  --engines-bar: 1;
+  position: relative;
   align-self: center;
   max-width: 34rem;
   margin-bottom: 7vh;
   padding: 0 0 0 1.15rem;
-  border-left: 3px solid #e59b20;
+}
+
+.engines-copy::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  bottom: 0.15rem;
+  width: 3px;
+  border-radius: 999px;
+  background: #e59b20;
+  transform: scaleY(var(--engines-bar, 1));
+  transform-origin: center top;
+  will-change: transform;
 }
 
 .engines-kicker {
@@ -1603,6 +1643,7 @@ body {
   letter-spacing: 0;
   text-transform: uppercase;
   color: #0b1120;
+  overflow: hidden;
 }
 
 .engines-lede {
@@ -1641,27 +1682,46 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  /* Sit the tyres on the dashed lane, not above the asphalt. */
-  margin-bottom: calc(var(--road-h) * -0.82);
+  /* Plant the contact patch on the dashed lane, not above it. */
+  margin-bottom: calc(var(--road-h) * -0.5);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .engines-rig {
+    transform: translate3d(110vw, 0, 0);
+  }
 }
 
 .engines-vehicle {
+  --wheel-size: 16.6%;
+  --wheel-top: 65.1%;
+  --wheel-front: 8.35%;
+  --wheel-mid: 58.7%;
+  --wheel-rear: 73.93%;
   position: relative;
-  height: 78%;
-  max-width: 86%;
+  width: min(92%, 980px);
+  height: auto;
+  max-width: 92%;
   overflow: visible;
+  transform-origin: 50% 100%;
+  will-change: transform;
 }
 
 .engines-truck {
+  position: relative;
+  z-index: 3;
   display: block;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
+  height: auto;
+  max-width: none;
   object-fit: contain;
+  object-position: center bottom;
 }
 
 .engines-cargo {
   position: absolute;
+  z-index: 5;
   left: 44.3%;
   top: 7.4%;
   width: 50.5%;
@@ -1676,18 +1736,99 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform-origin: 50% 50%;
+  will-change: transform;
 }
 
 .engines-horn {
   position: absolute;
   left: 5.6%;
   top: 0.5%;
-  z-index: 5;
+  z-index: 6;
   width: 29%;
   height: auto;
   pointer-events: none;
   transform: rotate(-2deg);
   transform-origin: 92% 70%;
+  will-change: transform;
+}
+
+@keyframes engines-tyre-spin {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.engines-wheel {
+  position: absolute;
+  z-index: 4;
+  top: var(--wheel-top);
+  width: var(--wheel-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #1a1a1a;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 0.2);
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.engines-wheel-tread {
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    #1a1a1a 0deg 11deg,
+    transparent 11deg 15deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 58%, #000 60%);
+  mask: radial-gradient(circle, transparent 58%, #000 60%);
+}
+
+.engines-wheel-hub {
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background: #ef3b86;
+  box-shadow:
+    0 0 0 3px #1a1a1a,
+    inset 0 1px 0 rgb(255 255 255 / 0.2);
+}
+
+.engines.is-driving .engines-wheel {
+  animation: engines-tyre-spin 1.25s linear infinite;
+}
+
+.engines.is-driving .engines-road .road-world {
+  animation-duration: 6.8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .engines.is-driving .engines-wheel {
+    animation: none;
+  }
+}
+
+.engines-wheel-hub::after {
+  content: "";
+  position: absolute;
+  inset: 36%;
+  border-radius: 50%;
+  background: #f45a9a;
+}
+
+.engines-wheel--front {
+  left: var(--wheel-front);
+}
+
+.engines-wheel--mid {
+  left: var(--wheel-mid);
+}
+
+.engines-wheel--rear {
+  left: var(--wheel-rear);
 }
 
 .engines-road {
@@ -2246,24 +2387,31 @@ body {
 
 .roadbook-flip-wrap,
 .roadbook-host {
+  --page-w: 440px;
+  --page-h: 580px;
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: visible;
-  opacity: 1;
-  transform: rotate(0deg);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.roadbook-flip-wrap {
+  transform: perspective(2400px) rotateX(5deg);
+}
+
+.roadbook-host {
+  z-index: 2;
+}
+
 .roadbook-book {
   overflow: visible;
-  opacity: 1;
-  transform: rotate(0deg);
 }
 
 .roadbook-page {
-  background: #f7f1e8;
+  background: #f3eadc;
 }
 
 .roadbook-page img {
@@ -2275,6 +2423,105 @@ body {
   user-select: none;
 }
 
+.roadbook-shell {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  width: var(--page-w);
+  height: var(--page-h);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 0.45s ease,
+    width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.roadbook-flip-wrap.is-open .roadbook-shell {
+  opacity: 1;
+}
+
+.roadbook-flip-wrap.is-open:not(.is-portrait) .roadbook-shell {
+  width: calc(var(--page-w) * 2);
+}
+
+.roadbook-board {
+  position: absolute;
+  display: block;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.1), transparent 28%),
+    linear-gradient(90deg, #5c1512, #8a221c 46%, #4e100e);
+  box-shadow: 0 16px 28px rgb(20 21 28 / 0.18);
+}
+
+.roadbook-board-left {
+  top: -10px;
+  bottom: -12px;
+  left: -18px;
+  width: calc(50% + 18px);
+  border-radius: 6px 0 0 6px;
+}
+
+.roadbook-board-right {
+  top: -10px;
+  bottom: -12px;
+  right: -18px;
+  width: calc(50% + 18px);
+  border-radius: 0 6px 6px 0;
+}
+
+.roadbook-thickness {
+  position: absolute;
+  top: 3px;
+  bottom: 5px;
+  display: block;
+  width: 10px;
+  background: repeating-linear-gradient(
+    to right,
+    #f7f0e4 0 1px,
+    #e4d3bb 1px 2px
+  );
+}
+
+.roadbook-thickness-left {
+  left: -10px;
+  border-radius: 1px 0 0 1px;
+}
+
+.roadbook-thickness-right {
+  right: -10px;
+  border-radius: 0 1px 1px 0;
+}
+
+.roadbook-gutter {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: 42px;
+  height: 100%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(20 21 28 / 0.12) 44%,
+    rgb(20 21 28 / 0.32) 50%,
+    rgb(20 21 28 / 0.12) 56%,
+    transparent 100%
+  );
+}
+
+.roadbook-floor {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -34px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(20 21 28 / 0.28), transparent 72%);
+}
+
 .roadbook .stf__parent,
 .roadbook .sft__wrapper,
 .roadbook .stf__block {
@@ -2282,32 +2529,36 @@ body {
 }
 
 .roadbook .stf__parent {
+  position: relative;
+  z-index: 2;
   margin: 0 auto;
-  opacity: 1;
-  transform: rotate(0deg);
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  filter: drop-shadow(0 22px 48px rgb(20 21 28 / 0.18));
-  pointer-events: none;
+  filter: drop-shadow(0 18px 36px rgb(20 21 28 / 0.2));
 }
 
 .roadbook-flip-wrap.is-cover .stf__parent {
-  transform: rotate(0deg) translate3d(calc(-1 * var(--cover-shift, 25%)), 0, 0);
+  transform: translate3d(calc(-1 * var(--cover-shift, 25%)), 0, 0);
 }
 
 .roadbook-flip-wrap.is-back .stf__parent {
-  transform: rotate(0deg) translate3d(var(--cover-shift, 25%), 0, 0);
+  transform: translate3d(var(--cover-shift, 25%), 0, 0);
+}
+
+.roadbook-flip-wrap.is-open .stf__parent {
+  transform: none;
+  filter: drop-shadow(0 26px 44px rgb(20 21 28 / 0.26));
 }
 
 .roadbook .stf__item {
-  opacity: 1;
-  background: #f7f1e8;
-  box-shadow: 0 1px 0 rgb(255 255 255 / 0.35) inset;
+  background: #f3eadc;
 }
 
 .roadbook .stf__item.--simple {
-  box-shadow:
-    0 8px 24px rgb(20 21 28 / 0.12),
-    2px 0 10px rgb(20 21 28 / 0.08);
+  box-shadow: none;
+}
+
+.roadbook .stf__item.--hard {
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.18) inset;
 }
 
 .roadbook .stf__outerShadow,
@@ -2317,22 +2568,39 @@ body {
   pointer-events: none;
 }
 
-.roadbook-flip-wrap:not(.is-cover):not(.is-back) .stf__block::after {
+.roadbook-flip-wrap.is-open:not(.is-portrait) .stf__block::after {
   content: "";
   position: absolute;
   top: 0;
   left: 50%;
   z-index: 8;
-  width: 28px;
+  width: 36px;
   height: 100%;
   transform: translateX(-50%);
   pointer-events: none;
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgb(20 21 28 / 0.08) 46%,
-    rgb(20 21 28 / 0.18) 50%,
-    rgb(20 21 28 / 0.08) 54%,
+    rgb(20 21 28 / 0.1) 46%,
+    rgb(20 21 28 / 0.28) 50%,
+    rgb(20 21 28 / 0.1) 54%,
+    transparent 100%
+  );
+}
+
+.roadbook-flip-wrap.is-open.is-portrait .stf__block::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  width: 22px;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(20 21 28 / 0.28) 0%,
+    rgb(20 21 28 / 0.08) 55%,
     transparent 100%
   );
 }
@@ -5245,19 +5513,7 @@ body {
     align-self: stretch;
     max-width: none;
     margin-bottom: 0;
-    border-left: 0;
     padding: 0.15rem 0 0 1.15rem;
-  }
-
-  .engines-copy::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.2rem;
-    bottom: 0.15rem;
-    width: 3px;
-    border-radius: 999px;
-    background: #e59b20;
   }
 
   .engines-heading {
@@ -5285,7 +5541,7 @@ body {
     flex: 0 0 auto;
     height: auto;
     min-height: 0;
-    margin-bottom: calc(var(--road-h) * -0.58);
+    margin-bottom: calc(var(--road-h) * -0.5);
   }
 
   .engines-vehicle {
@@ -5410,41 +5666,48 @@ body {
     height: 18px;
   }
 
-  .roadbook-flip-wrap.is-cover .stf__parent,
-  .roadbook-flip-wrap.is-back .stf__parent {
-    transform: rotate(0deg) translate3d(0, 0, 0);
+  .roadbook-flip-wrap {
+    transform: perspective(1800px) rotateX(4deg);
   }
-}
 
-/* Single-page book on phones: the binding sits on the left edge and the
-   unread pages stack out to the right, like an open book seen from the
-   right-hand page. */
-@media (max-width: 640px) {
-  .roadbook-flip-wrap:not(.is-cover):not(.is-back) .stf__block::after,
-  .roadbook .stf__block::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 8;
-    width: 22px;
-    height: 100%;
+  .roadbook-flip-wrap.is-cover .stf__parent,
+  .roadbook-flip-wrap.is-back .stf__parent,
+  .roadbook-flip-wrap.is-open .stf__parent {
     transform: none;
-    pointer-events: none;
+  }
+
+  .roadbook-board-left {
+    top: -8px;
+    bottom: -10px;
+    left: -14px;
+    width: 16px;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .roadbook-board-right {
+    display: none;
+  }
+
+  .roadbook-thickness-left {
+    left: -6px;
+    width: 6px;
+  }
+
+  .roadbook-thickness-right {
+    right: -9px;
+    width: 9px;
+  }
+
+  .roadbook-gutter {
+    left: 0;
+    width: 22px;
+    transform: none;
     background: linear-gradient(
       to right,
       rgb(20 21 28 / 0.28) 0%,
-      rgb(20 21 28 / 0.1) 45%,
+      rgb(20 21 28 / 0.08) 55%,
       transparent 100%
     );
-  }
-
-  .roadbook .stf__block {
-    box-shadow:
-      2px 1px 0 #efe6d8,
-      4px 2px 0 #e2d6c2,
-      6px 3px 0 #efe6d8,
-      8px 4px 0 #d8cab3;
   }
 }
 
