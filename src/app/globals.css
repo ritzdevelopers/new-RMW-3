@@ -2331,6 +2331,7 @@ body {
 .roadbook {
   position: relative;
   z-index: 1;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2382,7 +2383,6 @@ body {
   min-height: 0;
   overflow: visible;
   opacity: 1;
-  transform: rotate(0deg);
 }
 
 .roadbook-flip-wrap,
@@ -2603,6 +2603,104 @@ body {
     rgb(20 21 28 / 0.08) 55%,
     transparent 100%
   );
+}
+
+/* Solid 3D copy of the closed book, shown only during the scroll intro and
+   handed over to the PageFlip cover once it faces the viewer. */
+.roadbook-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1800px;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  filter: drop-shadow(0 30px 40px rgb(20 21 28 / 0.28));
+}
+
+.roadbook-intro-book {
+  --book-d: calc(var(--page-w) * 0.08);
+  position: relative;
+  width: var(--page-w);
+  height: var(--page-h);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.roadbook-intro-book > span {
+  position: absolute;
+  display: block;
+  backface-visibility: hidden;
+}
+
+.roadbook-intro-face {
+  inset: 0;
+  overflow: hidden;
+  background: #8a221c;
+}
+
+.roadbook-intro-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.roadbook-intro-front {
+  transform: translateZ(calc(var(--book-d) / 2));
+}
+
+.roadbook-intro-back {
+  transform: rotateY(180deg) translateZ(calc(var(--book-d) / 2));
+}
+
+.roadbook-intro-spine {
+  top: 0;
+  bottom: 0;
+  left: calc(50% - var(--book-d) / 2);
+  width: var(--book-d);
+  transform: rotateY(-90deg) translateZ(calc(var(--page-w) / 2));
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.12), transparent 30%),
+    linear-gradient(90deg, #4e100e, #9a2a22 50%, #4e100e);
+}
+
+.roadbook-intro-edge-side {
+  top: 4px;
+  bottom: 4px;
+  left: calc(50% - var(--book-d) / 2);
+  width: var(--book-d);
+  transform: rotateY(90deg) translateZ(calc(var(--page-w) / 2 - 3px));
+  background: repeating-linear-gradient(
+    to right,
+    #f7f0e4 0 1px,
+    #e4d3bb 1px 2px
+  );
+}
+
+.roadbook-intro-edge-top,
+.roadbook-intro-edge-bottom {
+  left: 3px;
+  right: 3px;
+  top: calc(50% - var(--book-d) / 2);
+  height: var(--book-d);
+  background: repeating-linear-gradient(
+    to bottom,
+    #f7f0e4 0 1px,
+    #e4d3bb 1px 2px
+  );
+}
+
+.roadbook-intro-edge-top {
+  transform: rotateX(90deg) translateZ(calc(var(--page-h) / 2 - 3px));
+}
+
+.roadbook-intro-edge-bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--page-h) / 2 - 3px));
 }
 
 .roadbook-loading {
