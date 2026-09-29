@@ -1803,6 +1803,10 @@ body {
   container-type: inline-size;
 }
 
+.growth-kicker {
+  display: none;
+}
+
 .growth-title {
   width: 100%;
   max-width: none;
@@ -1953,6 +1957,12 @@ body {
 }
 
 @media (max-width: 1024px) {
+  .growth {
+    --growth-paper: #f3eadf;
+    background: var(--growth-paper);
+    color: #14151c;
+  }
+
   .growth-body {
     display: flex;
     flex-direction: column;
@@ -1960,10 +1970,8 @@ body {
     min-height: 0;
   }
 
-  /* The highway photo becomes a scene above the copy and the hoarding's pole
-     stands on its roadside. The roadside sits at 85% of the photo's height
-     (≈48% of its width at 16:9); margins are % of width, so the hoarding
-     tracks the photo at every size. */
+  /* Highway stays a scene. Copy leaves the flat blue slab and sits
+     in a paper card that overlaps the roadside. */
   .growth-art {
     position: relative;
     inset: auto;
@@ -1981,9 +1989,10 @@ body {
   .growth-art::after {
     background: linear-gradient(
       180deg,
-      transparent 78%,
-      rgb(13 99 179 / 0.55) 94%,
-      var(--growth-blue) 100%
+      transparent 52%,
+      rgb(243 234 223 / 0.22) 74%,
+      rgb(243 234 223 / 0.82) 90%,
+      var(--growth-paper) 100%
     );
   }
 
@@ -1999,13 +2008,15 @@ body {
 
   .growth-inner {
     position: relative;
+    z-index: 5;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: flex-start;
     height: auto;
-    gap: 1.5rem;
-    padding: 1.5rem 1.5rem 2rem;
+    gap: 0;
+    margin-top: -3.25rem;
+    padding: 0 1.5rem 2rem;
   }
 
   .growth-road {
@@ -2013,8 +2024,40 @@ body {
   }
 
   .growth-copy {
+    position: relative;
     justify-self: stretch;
-    max-width: none;
+    max-width: 34rem;
+    margin-inline: auto;
+    padding: 1.55rem 1.55rem 1.35rem;
+    border: 1px solid rgb(20 21 28 / 0.06);
+    border-radius: 24px;
+    background: #fffdf8;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.85) inset,
+      0 18px 46px rgb(20 21 28 / 0.12);
+  }
+
+  .growth-copy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1.4rem;
+    right: 1.4rem;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #e53e2a 0%, #f0b450 100%);
+  }
+
+  .growth-kicker {
+    display: block;
+    margin: 0 0 0.55rem;
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #c2410c;
   }
 
   .growth-copy,
@@ -2025,22 +2068,73 @@ body {
     max-width: none;
   }
 
+  .growth-title {
+    font-size: clamp(28px, 3.4vw, 36px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: #14151c;
+  }
+
   .growth-list {
+    counter-reset: growth-item;
     min-height: 0;
+    padding-top: 1rem;
+    gap: 0;
+  }
+
+  .growth-list li {
+    counter-increment: growth-item;
+    padding: 0.78rem 0 0.78rem 2.2rem;
+    border-bottom: 1px solid rgb(20 21 28 / 0.08);
+    font-size: clamp(15px, 1.7vw, 17px);
+    line-height: 1.35;
+    color: #2c303a;
+  }
+
+  .growth-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .growth-list li::before {
+    content: counter(growth-item, decimal-leading-zero);
+    top: 0.86rem;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: #c2410c;
   }
 
   .growth-btn {
     width: min(100%, 280px);
-    height: 56px;
+    height: 54px;
+    margin-top: 1.2rem;
   }
 
   .growth-btn span {
     width: auto;
     height: auto;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.2;
   }
 
+  .growth-dots {
+    margin-top: 1.15rem;
+  }
+
+  .growth-dot {
+    background: rgb(20 21 28 / 0.2);
+  }
+
+  .growth-dot-active {
+    width: 22px;
+    background: #c2410c;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2057,7 +2151,34 @@ body {
   }
 
   .growth-inner {
-    padding: 1.25rem 1.25rem 1.75rem;
+    margin-top: -2.75rem;
+    padding: 0 1rem 1.65rem;
+  }
+
+  .growth-copy {
+    padding: 1.35rem 1.2rem 1.15rem;
+    border-radius: 22px;
+  }
+
+  .growth-copy::before {
+    left: 1.15rem;
+    right: 1.15rem;
+  }
+
+  .growth-title {
+    font-size: clamp(24px, 6.6vw, 30px);
+  }
+
+  .growth-list li {
+    font-size: 15px;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .growth-btn {
+    width: 100%;
+    max-width: none;
+    height: 52px;
   }
 }
 
@@ -5158,18 +5279,18 @@ body {
 /* ---------- Growth ---------- */
 @media (max-width: 640px) {
   .growth-title {
-    font-size: 26px;
+    font-size: clamp(24px, 6.6vw, 30px);
   }
 
   .growth-list li {
     height: auto;
-    font-size: 16px;
-    line-height: 1.25;
+    font-size: 15px;
+    line-height: 1.35;
   }
 
   .growth-btn {
     width: 100%;
-    max-width: 320px;
+    max-width: none;
   }
 }
 

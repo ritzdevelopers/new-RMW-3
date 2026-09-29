@@ -79,6 +79,9 @@ export function Growth() {
 
         <div className="growth-inner">
           <div ref={copyRef} className="growth-copy">
+            <p data-growth-item className="growth-kicker">
+              Capabilities
+            </p>
             <h2 data-growth-item className="growth-title">
               {slide.title}
             </h2>
