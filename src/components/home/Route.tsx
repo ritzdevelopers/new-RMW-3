@@ -1,7 +1,7 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { gsap, registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { site } from "@/lib/site";
@@ -18,10 +18,22 @@ const MASK_CLOSED = 7;
 const MASK_OPEN = 160;
 const PIN_DISTANCE = 1800;
 const MARKER_RESERVE = 120;
+const COMPACT_MQ = "(max-width: 1024px)";
 
 export function Route() {
   const rootRef = useRef<HTMLElement>(null);
   const { ready, reduced } = useMotion();
+  const [compact, setCompact] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia(COMPACT_MQ).matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(COMPACT_MQ);
+    const sync = () => setCompact(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useGSAP(
     () => {
@@ -77,6 +89,19 @@ export function Route() {
           });
         }
         if (marker) gsap.set(marker, { autoAlpha: 1, y: 0 });
+        return;
+      }
+
+      /* Phones and tablets: skip the long pin so Impact stays content-sized
+         and Engines follows without a full-viewport cream gap. */
+      if (compact) {
+        setRadius(MASK_OPEN);
+        clearMask();
+        gsap.set(poster, { scale: 1 });
+        gsap.set(caption, { autoAlpha: 0 });
+        if (proofPin) gsap.set(proofPin, { yPercent: 0 });
+        if (label) gsap.set(label, { yPercent: -50 });
+        if (marker) gsap.set(marker, { autoAlpha: 1, y: 0, scale: 1 });
         return;
       }
 
@@ -206,7 +231,7 @@ export function Route() {
         restoreMask();
       };
     },
-    { scope: rootRef, dependencies: [ready, reduced] },
+    { scope: rootRef, dependencies: [ready, reduced, compact] },
   );
 
   return (
