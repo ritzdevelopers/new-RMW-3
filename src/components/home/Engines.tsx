@@ -105,47 +105,51 @@ export function Engines() {
           })}
         </div>
 
+      </div>
+
+      <div className="engines-split">
         <div ref={copyRef} className="engines-copy">
+          <p className="engines-kicker">{engine.label}</p>
           <h3 className="engines-heading">{engine.heading}</h3>
           <p className="engines-lede">{engine.copy}</p>
         </div>
-      </div>
 
-      <div className="engines-stage">
-        <div className="engines-rig">
-          <div className="engines-vehicle">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="engines-truck"
-            src="/s4/engines-truck.png"
-            alt=""
-            width={1024}
-            height={472}
-          />
-          <div className="engines-cargo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              ref={cargoRef}
-              key={engine.id}
-              src={engine.cargo}
-              alt=""
-              width={1400}
-              height={900}
-            />
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="engines-horn"
-            src="/s4/Frame 105331.png"
-            alt=""
-            width={640}
-            height={220}
-          />
+        <div className="engines-stage">
+          <div className="engines-rig">
+            <div className="engines-vehicle">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="engines-truck"
+                src="/s4/engines-truck.png"
+                alt=""
+                width={1024}
+                height={472}
+              />
+              <div className="engines-cargo">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  ref={cargoRef}
+                  key={engine.id}
+                  src={engine.cargo}
+                  alt=""
+                  width={1400}
+                  height={900}
+                />
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="engines-horn"
+                src="/s4/Frame 105331.png"
+                alt=""
+                width={640}
+                height={220}
+              />
+            </div>
           </div>
         </div>
-
-        <Road className="engines-road" />
       </div>
+
+      <Road className="engines-road" />
       <div className="engines-strip engines-strip-bottom" aria-hidden />
     </section>
   );
