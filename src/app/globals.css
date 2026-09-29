@@ -1076,14 +1076,34 @@ body {
 }
 
 .proof-logos {
+  position: relative;
   min-width: 0;
   flex: 1;
+  margin-right: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgb(243 214 160 / 0.42);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff8ec 0%, #f3e6cc 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 0 0 4px rgb(243 214 160 / 0.08),
+    0 10px 28px rgb(0 0 0 / 0.38);
+  clip-path: inset(0 100% 0 0 round 999px);
+  will-change: clip-path;
+}
+
+.proof-logos.is-stretched {
+  clip-path: inset(0 0 0 0 round 999px);
+  will-change: auto;
+}
+
+.proof-logos-fade {
   overflow: hidden;
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    #000 28px,
-    #000 calc(100% - 36px),
+    #000 40px,
+    #000 calc(100% - 40px),
     transparent
   );
 }
@@ -1092,8 +1112,8 @@ body {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 3.5rem;
-  padding-right: 3.5rem;
+  gap: 1rem;
+  padding: 6px 1rem 6px 0;
   animation: marquee 120s linear infinite;
 }
 
@@ -1105,17 +1125,70 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  flex: none;
   margin: 0;
+  width: 170px;
   height: 72px;
-  background: transparent;
+  padding: 4px 16px;
+}
+
+.proof-logo::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  right: -0.5rem;
+  bottom: 18%;
+  width: 1px;
+  background: linear-gradient(transparent, rgb(20 21 28 / 0.16), transparent);
 }
 
 .proof-logo img {
   display: block;
-  width: auto;
-  height: 56px;
-  max-width: 156px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  filter: none;
+  mix-blend-mode: normal;
+  opacity: 1;
+  transition: transform 0.35s ease;
+}
+
+.proof-logo:hover img {
+  transform: scale(1.08);
+}
+
+@media (max-width: 860px) {
+  .proof-logos {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .proof-logos-fade {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 24px),
+      transparent
+    );
+  }
+
+  .proof-logos-track {
+    gap: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .proof-logo {
+    width: 118px;
+    height: 54px;
+    padding: 4px 12px;
+  }
+
+  .proof-logo::after {
+    right: -0.375rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1850,17 +1923,49 @@ body {
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .growth-body {
+    display: flex;
+    flex-direction: column;
     aspect-ratio: auto;
     min-height: 0;
+  }
+
+  /* The highway photo becomes a scene above the copy and the hoarding's pole
+     stands on its roadside. The roadside sits at 85% of the photo's height
+     (≈48% of its width at 16:9); margins are % of width, so the hoarding
+     tracks the photo at every size. */
+  .growth-art {
+    position: relative;
+    inset: auto;
+    flex: none;
+    aspect-ratio: 16 / 9;
   }
 
   .growth-art img {
     position: absolute;
     inset: 0;
     object-fit: cover;
-    object-position: 18% 70%;
+    object-position: 0% 100%;
+  }
+
+  .growth-art::after {
+    background: linear-gradient(
+      180deg,
+      transparent 78%,
+      rgb(13 99 179 / 0.55) 94%,
+      var(--growth-blue) 100%
+    );
+  }
+
+  .growth-body > .growth-portrait {
+    position: absolute;
+    top: 0;
+    left: 4%;
+    bottom: auto;
+    width: 52%;
+    margin: 13.6% 0 0;
+    align-self: auto;
   }
 
   .growth-inner {
@@ -1871,16 +1976,7 @@ body {
     justify-content: flex-start;
     height: auto;
     gap: 1.5rem;
-    padding: 2rem 1.25rem 1.75rem;
-  }
-
-  .growth-portrait {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    align-self: center;
-    width: min(92vw, 440px);
-    margin: 0 0 0.5rem;
+    padding: 1.5rem 1.5rem 2rem;
   }
 
   .growth-road {
@@ -1904,13 +2000,35 @@ body {
     min-height: 0;
   }
 
-  .growth-art {
-    inset: 0;
-    opacity: 1;
+  .growth-btn {
+    width: min(100%, 280px);
+    height: 56px;
   }
 
-  .growth-art::after {
-    background: rgb(7 22 48 / 0.48);
+  .growth-btn span {
+    width: auto;
+    height: auto;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+}
+
+@media (max-width: 640px) {
+  /* Taller scene on phones so the hoarding reads large; the roadside is at
+     68% of width for a 5:4 crop. */
+  .growth-art {
+    aspect-ratio: 5 / 4;
+  }
+
+  .growth-body > .growth-portrait {
+    left: 9%;
+    width: 82%;
+    margin-top: 13.9%;
+  }
+
+  .growth-inner {
+    padding: 1.25rem 1.25rem 1.75rem;
   }
 }
 
@@ -2150,12 +2268,22 @@ body {
 
 @media (max-width: 860px) {
   .roadbook {
+    height: auto;
+    max-height: none;
+    min-height: 0;
     padding: 3.25rem 1rem 4rem;
   }
 
   .roadbook-stage {
+    flex: none;
     grid-template-columns: 48px minmax(0, 1fr) 48px;
     gap: 10px;
+  }
+
+  /* PageFlip sizes the book from this box, so it needs a real height once
+     the section itself is auto-height. */
+  .roadbook-viewport {
+    height: clamp(300px, 64svh, 560px);
   }
 
   .roadbook-nav,
@@ -2286,6 +2414,12 @@ body {
     flex-direction: column;
     align-items: flex-start;
     padding: 4rem 0 4.25rem;
+  }
+
+  /* The desktop 435px basis becomes a height once the row stacks. */
+  .moved-copy {
+    flex: none;
+    width: 100%;
   }
 
   .moved-stats {
@@ -2862,7 +2996,7 @@ body {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 760px) {
   .awards-slide {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -3397,36 +3531,44 @@ body {
     padding-bottom: 0.5rem;
   }
 
+  /* The card stays inside the truck's screen; `cqi` scales its type with
+     the truck so it fits the screen at any width. */
   .highways-visual {
-    width: min(540px, 100%);
-    margin-left: 0;
+    width: min(580px, 100%);
+    margin: 1.5rem auto 0;
+    container-type: inline-size;
   }
 
   .highways-card {
-    position: relative;
-    left: auto;
-    top: auto;
-    width: min(318px, 86%);
-    height: auto;
-    margin-bottom: 0.75rem;
-    padding: 1.3rem 1.35rem 1.35rem;
-    border-radius: 16px;
+    left: 6%;
+    top: 8.6%;
+    width: 54%;
+    height: 28.6%;
+    overflow: hidden;
+    padding: 1.8cqi 2.8cqi;
+    border-radius: 1.4cqi;
   }
 
   .highways-card-title {
-    font-size: 22px;
+    font-size: 4.2cqi;
+    line-height: 1.12;
   }
 
   .highways-card-copy {
-    margin-top: 0.55rem;
-    font-size: 13.5px;
-    line-height: 1.45;
+    display: -webkit-box;
+    margin-top: 0.9cqi;
+    overflow: hidden;
+    font-size: 2.5cqi;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .highways-card-btn {
-    margin-top: 0.95rem;
-    padding: 11px 16px;
-    font-size: 12px;
+    margin-top: 1.5cqi;
+    padding: 1.2cqi 2cqi;
+    border-radius: 1cqi;
+    font-size: 2.1cqi;
   }
 
   .highways-truck {
@@ -3447,6 +3589,11 @@ body {
   .marquee,
   .proof-logos-track {
     animation: none;
+  }
+
+  .proof-logos {
+    clip-path: none;
+    will-change: auto;
   }
 
   html:not(.lenis) {
@@ -4182,10 +4329,6 @@ body {
   display: none;
 }
 
-.site-nav-mobile {
-  display: none;
-}
-
 @media (max-width: 1023px) {
   .site-header-bar {
     position: relative;
@@ -4234,67 +4377,426 @@ body {
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  .site-nav-mobile {
-    position: absolute;
-    top: calc(100% - 6px);
-    left: 1.25rem;
-    right: 1.25rem;
-    z-index: 60;
+}
+
+/* ---------- Full-screen mobile menu ---------- */
+.mnav {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .mnav {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 10px;
-    border-radius: 8px;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    color: #ffffff;
+    background: var(--ink);
+    visibility: hidden;
+    clip-path: circle(0% at calc(100% - 42px) 42px);
+    transition:
+      clip-path 0.7s cubic-bezier(0.77, 0, 0.18, 1),
+      visibility 0s linear 0.7s;
+  }
+
+  .mnav.is-open {
+    visibility: visible;
+    clip-path: circle(150% at calc(100% - 42px) 42px);
+    transition:
+      clip-path 0.8s cubic-bezier(0.77, 0, 0.18, 1),
+      visibility 0s;
+  }
+
+  .mnav-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 40% at 100% 0%, rgb(220 40 100 / 0.38), transparent 70%),
+      radial-gradient(55% 35% at 0% 55%, rgb(240 120 40 / 0.22), transparent 70%),
+      radial-gradient(70% 40% at 80% 100%, rgb(26 77 184 / 0.35), transparent 70%);
+  }
+
+  .mnav-glow::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 6px;
+    background: linear-gradient(
+      90deg,
+      var(--truck-yellow),
+      var(--truck-orange) 35%,
+      var(--truck-pink) 65%,
+      var(--truck-blue)
+    );
+  }
+
+  .mnav-top,
+  .mnav-links,
+  .mnav-foot {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mnav-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.25rem 0;
+  }
+
+  .mnav-top .brand-mark-logo {
+    filter: drop-shadow(0 0 12px rgb(255 255 255 / 0.18));
+  }
+
+  .mnav-close {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.06);
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.4s ease;
+  }
+
+  .mnav-close:hover,
+  .mnav-close:focus-visible {
+    background: rgb(255 255 255 / 0.14);
+    transform: rotate(90deg);
+  }
+
+  .mnav-close span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
     background: #ffffff;
-    box-shadow: 0 18px 40px rgb(20 21 28 / 0.18);
   }
 
-  .site-nav-mobile .site-nav-link {
-    height: auto;
-    padding: 12px 14px;
-    border-radius: 4px;
+  .mnav-close span:nth-child(1) {
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
-  .site-nav-mobile .site-nav-link.is-active {
-    background: #f4f2ef;
+  .mnav-close span:nth-child(2) {
+    transform: translate(-50%, -50%) rotate(-45deg);
   }
 
-  .site-nav-mobile .btn {
-    margin-top: 6px;
-    width: 100%;
+  .mnav-links {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+  }
+
+  .mnav-link {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: clamp(0.7rem, 2.2svh, 1.15rem) 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .mnav.is-open .mnav-link {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s ease calc(0.3s + var(--i) * 0.07s),
+      transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(0.3s + var(--i) * 0.07s);
+  }
+
+  .mnav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--truck-yellow),
+      var(--truck-orange) 48%,
+      var(--truck-pink)
+    );
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s ease;
+  }
+
+  .mnav-num {
+    min-width: 2ch;
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgb(255 255 255 / 0.45);
+  }
+
+  .mnav-label {
+    flex: 1;
+    font-family: var(--font-display), var(--font-outfit), sans-serif;
+    font-size: clamp(2.1rem, 9vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    transition: transform 0.4s ease;
+  }
+
+  .mnav-arrow {
+    align-self: center;
+    font-size: clamp(1.25rem, 4.5vw, 1.75rem);
+    color: rgb(255 255 255 / 0.4);
+    transform: translateX(-6px);
+    transition: transform 0.4s ease, color 0.4s ease;
+  }
+
+  .mnav-link:hover::after,
+  .mnav-link:focus-visible::after,
+  .mnav-link.is-active::after {
+    transform: scaleX(1);
+  }
+
+  .mnav-link:hover .mnav-label,
+  .mnav-link:focus-visible .mnav-label {
+    transform: translateX(8px);
+  }
+
+  .mnav-link:hover .mnav-arrow,
+  .mnav-link:focus-visible .mnav-arrow {
+    color: var(--truck-yellow);
+    transform: translateX(0);
+  }
+
+  .mnav-link.is-active .mnav-label {
+    background: linear-gradient(90deg, var(--truck-yellow), var(--truck-orange) 50%, var(--truck-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .mnav-link.is-active .mnav-num {
+    color: var(--truck-yellow);
+  }
+
+  .mnav-foot {
+    display: grid;
+    gap: 1.1rem;
+    padding: 0 1.25rem 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .mnav.is-open .mnav-foot {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s ease 0.7s,
+      transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s;
+  }
+
+  .mnav-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffffff;
+    background: linear-gradient(90deg, var(--truck-orange), var(--truck-pink));
+    box-shadow: 0 14px 34px rgb(220 40 100 / 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .mnav-cta span {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .mnav-cta:hover,
+  .mnav-cta:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgb(220 40 100 / 0.45);
+  }
+
+  .mnav-cta:hover span,
+  .mnav-cta:focus-visible span {
+    transform: translateX(4px);
+  }
+
+  .mnav-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: 14px;
+  }
+
+  .mnav-contact a {
+    color: rgb(255 255 255 / 0.72);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .mnav-contact a:hover,
+  .mnav-contact a:focus-visible {
+    color: #ffffff;
+  }
+
+  .mnav-tagline {
+    margin: 0;
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.35);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .mnav-top {
+    padding: 1.5rem 2.5rem 0;
+  }
+
+  .mnav-links {
+    padding: 2rem 2.5rem;
+  }
+
+  .mnav-link {
+    gap: 24px;
+  }
+
+  .mnav-num {
+    font-size: 14px;
+  }
+
+  .mnav-foot {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1.25rem 2rem;
+    padding: 0 2.5rem 2.5rem;
+  }
+
+  .mnav-cta {
+    gap: 18px;
+    min-width: 260px;
+  }
+
+  .mnav-contact {
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .mnav-tagline {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
+  .mnav,
+  .mnav.is-open,
+  .mnav-link,
+  .mnav.is-open .mnav-link,
+  .mnav-foot,
+  .mnav.is-open .mnav-foot {
+    transition: none;
   }
 }
 
 @media (max-width: 480px) {
   .site-header-bar {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    gap: 8px;
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .brand-mark-logo {
+    height: 46px;
   }
 
   .site-header-actions .btn-ink {
-    padding-left: 16px;
-    padding-right: 16px;
-    font-size: 12px;
+    height: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .audit-card-title {
+    white-space: normal;
+  }
+
+  .audit-copy {
+    padding: 18px 14px 16px;
+    box-shadow: 5px 5px 0 var(--audit-ink);
   }
 }
 
 /* ---------- Hero ---------- */
-@media (max-width: 979px) {
-  /* Fixed-width copy (576px lede, nowrap title lines) was inflating the
-     single grid track past the viewport on phones. */
+@media (max-width: 1099px) {
+  /* Stay a single column through tablet. The two-column truck layout
+     starts at 1100px so copy and the truck don't collide. */
   .hero-grid {
     grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem 0;
+    padding-bottom: 0;
   }
 
   .hero-copy,
   .hero-visual {
+    grid-column: auto;
+    grid-row: auto;
     min-width: 0;
     max-width: 100%;
+  }
+
+  .hero-copy {
+    padding-bottom: 0.5rem;
   }
 
   .hero-title,
   .hero-lede {
     width: 100%;
+  }
+
+  .hero-title {
+    font-size: clamp(1.7rem, 6.2vw, 3.4rem);
+    line-height: 1.08;
+  }
+
+  /* "Idea Ka Dhamaka" is the longest cycling line. */
+  .hero-title[data-headline="1"] {
+    font-size: clamp(1.35rem, 5.1vw, 2.3rem);
   }
 
   .hero-scene {
@@ -4303,31 +4805,53 @@ body {
 
   .hero-visual {
     justify-content: center;
+    overflow: visible;
+  }
+
+  /* The art has ~5% clear space under the tyres (the -3%, as a share of
+     width); the rest drops the wheels onto the lane of the road below. */
+  .hero-rig {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: calc(var(--road-h) * -0.55 - 3%);
+    transform: none;
   }
 
   .hero-truck {
-    transform: scale(1.18);
-  }
-
-  .hero-rig {
-    transform: translateY(64px);
+    object-fit: cover;
+    object-position: 70% 78%;
+    transform: none;
   }
 }
 
 @media (max-width: 640px) {
   .hero {
-    padding-top: 6.75rem;
+    padding-top: 5.5rem;
   }
 
   .hero-grid {
-    gap: 1.5rem 0;
+    gap: 0.25rem 0;
+    padding: 0 1.1rem;
+  }
+
+  .hero-copy {
+    padding-bottom: 0;
+  }
+
+  .hero-kicker {
+    margin-bottom: 0.85rem;
+    gap: 6px;
   }
 
   .hero-title {
-    font-size: clamp(1.7rem, 8vw, 58px);
+    font-size: clamp(1.6rem, 8.2vw, 2.55rem);
     line-height: 1.05;
     min-height: 0;
     height: auto;
+  }
+
+  .hero-title[data-headline="1"] {
+    font-size: clamp(1.15rem, 6vw, 1.65rem);
   }
 
   .hero-title-viewport,
@@ -4337,17 +4861,24 @@ body {
   }
 
   .hero-lede {
-    margin-top: 1rem;
-    font-size: 17px;
-    line-height: 25px;
+    margin-top: 0.85rem;
+    font-size: 16px;
+    line-height: 23px;
   }
 
   .hero-actions {
-    margin-top: 1.5rem;
+    margin-top: 1.15rem;
+  }
+
+  .hero-rig {
+    aspect-ratio: 16 / 10.5;
+    margin-bottom: calc(var(--road-h) * -0.55 - 3.3%);
+    transform: none;
   }
 
   .hero-truck {
-    transform: scale(1.08);
+    object-position: 58% 70%;
+    transform: none;
   }
 }
 
@@ -4359,19 +4890,74 @@ body {
 }
 
 /* ---------- Ideas That Travel / credentials ---------- */
+@media (max-width: 860px) {
+  .proof-body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem 62px;
+  }
+
+  .proof-stats {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  .proof-stat,
+  .proof-stat-value,
+  .proof-stat-label {
+    width: auto;
+    max-width: 11rem;
+    height: auto;
+  }
+
+  .proof-logos {
+    width: 100%;
+  }
+
+  .proof-milestone {
+    width: 72px;
+    height: 96px;
+    margin-top: -96px;
+  }
+
+  .ticker-row {
+    gap: 8px 14px;
+    padding: 12px 16px;
+  }
+
+  .ticker-item {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    gap: 0.55rem;
+  }
+}
+
 @media (max-width: 640px) {
   .proof-edge-label-gold {
     font-size: 14px;
   }
 
   .proof-stat-value {
-    font-size: 40px;
+    font-size: 36px;
+    height: auto;
+  }
+
+  .proof-stat-label {
+    min-height: 0;
+    font-size: 12px;
+    letter-spacing: 0.04em;
   }
 }
 
 /* ---------- Route (Insight » Idea » Impact) ---------- */
 @media (max-width: 900px) {
+  /* The ticker and credentials bar sit over the top of this pinned stage,
+     and `safe` stops tall content from being clipped above the fold. */
   .route-mask-media {
+    justify-content: safe center;
+    padding-top: 7rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -4413,25 +4999,19 @@ body {
 
 /* ---------- One agency. Three engines. ---------- */
 @media (max-width: 1024px) {
-  .engines-inner {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-}
-
-@media (max-width: 760px) {
   .engines {
     --engines-strip-h: 32px;
     --engines-strip-tile: 640px;
     --engines-bg-strip-h: calc(70 * 100vw / 1024);
     height: auto;
     max-height: none;
-    min-height: 100svh;
+    min-height: 0;
     padding-top: 0;
+    overflow: visible;
   }
 
   .engines-inner {
-    padding-top: calc(var(--engines-bg-strip-h) + 1rem);
+    padding: calc(var(--engines-bg-strip-h) + 1rem) 1.25rem 0.5rem;
   }
 
   /* Tabs become one horizontally scrollable row instead of eating
@@ -4445,6 +5025,7 @@ body {
     margin-left: -1.25rem;
     margin-right: -1.25rem;
     padding: 0 1.25rem 6px;
+    scroll-padding-inline: 1.25rem;
     scroll-snap-type: x proximity;
   }
 
@@ -4463,7 +5044,9 @@ body {
   }
 
   .engines-lede {
-    -webkit-line-clamp: 4;
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
   }
 
   .engines-stage {
@@ -4473,14 +5056,24 @@ body {
 
   /* Give the truck a real height; on desktop it fills leftover flex
      space, which collapses to nothing once the tabs wrap. */
+  /* Size the truck by width so the cargo overlay stays registered to the
+     art, then pull it down so the tyres sit on the lane. */
   .engines-rig {
     flex: 0 0 auto;
-    height: clamp(170px, 48vw, 300px);
-    min-height: 170px;
+    height: auto;
+    min-height: 0;
+    margin-bottom: calc(var(--road-h) * -0.6);
   }
 
   .engines-vehicle {
-    height: 100%;
+    width: min(92%, 560px);
+    height: auto;
+  }
+
+  .engines-truck {
+    width: 100%;
+    height: auto;
+    max-width: none;
   }
 }
 
@@ -4551,6 +5144,38 @@ body {
   }
 }
 
+/* Single-page book on phones: the binding sits on the left edge and the
+   unread pages stack out to the right, like an open book seen from the
+   right-hand page. */
+@media (max-width: 640px) {
+  .roadbook-flip-wrap:not(.is-cover):not(.is-back) .stf__block::after,
+  .roadbook .stf__block::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    width: 22px;
+    height: 100%;
+    transform: none;
+    pointer-events: none;
+    background: linear-gradient(
+      to right,
+      rgb(20 21 28 / 0.28) 0%,
+      rgb(20 21 28 / 0.1) 45%,
+      transparent 100%
+    );
+  }
+
+  .roadbook .stf__block {
+    box-shadow:
+      2px 1px 0 #efe6d8,
+      4px 2px 0 #e2d6c2,
+      6px 3px 0 #efe6d8,
+      8px 4px 0 #d8cab3;
+  }
+}
+
 /* ---------- Work that moved something ---------- */
 @media (max-width: 480px) {
   .moved-title {
@@ -4563,24 +5188,166 @@ body {
   }
 }
 
-/* ---------- Reviews ---------- */
+@media (max-width: 900px) {
+  .moved-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+  }
+
+  .moved-stat-value {
+    height: auto;
+    white-space: normal;
+  }
+}
 @media (max-width: 640px) {
   .reviews {
     min-height: 0;
-    padding: 7rem 1rem 3.5rem;
+    padding: 5.5rem 0.75rem 2.75rem;
+  }
+
+  .reviews::before {
+    border-width: 16px;
   }
 
   .reviews-title {
-    font-size: 40px;
+    font-size: 32px;
+    letter-spacing: 0.12em;
   }
 
   .reviews-card.is-center,
   .reviews-card-featured {
-    padding: 24px 20px 20px;
+    width: 100%;
+    padding: 22px 16px 18px;
+    min-height: 0;
+  }
+
+  .reviews-quote {
+    font-size: 14px;
+    line-height: 21px;
   }
 }
 
 /* ---------- Awards ---------- */
+@media (max-width: 980px) {
+  .awards-inner {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .awards-title {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  /* Truck parks on the card's top border. */
+  .awards-visual {
+    position: relative;
+    z-index: 2;
+    width: min(78%, 420px);
+    max-width: none;
+    margin: 0 auto -14px;
+  }
+
+  /* Let the copy set the height; the fixed aspect ratio was clipping the
+     heading and description below the logo. */
+  .awards-card {
+    aspect-ratio: auto;
+    max-height: none;
+    border-radius: 6px;
+    box-shadow: 0 18px 40px rgb(52 20 90 / 0.22);
+  }
+
+  .awards-card-inner {
+    height: auto;
+    min-height: clamp(240px, 42vw, 340px);
+    gap: 1.1rem;
+    padding: clamp(2.25rem, 6vw, 3rem) clamp(1.5rem, 6vw, 3.5rem)
+      clamp(1.5rem, 4vw, 2.25rem);
+  }
+
+  .awards-slide {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .awards-mark {
+    grid-template-columns: 80px minmax(0, 1fr);
+    row-gap: 0.35rem;
+  }
+
+  .awards-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .awards-logo img {
+    width: 54px;
+    height: 54px;
+  }
+
+  .awards-heading {
+    font-size: 20px;
+  }
+
+  .awards-copy {
+    grid-column: 2;
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .awards-steps {
+    margin-left: 0;
+  }
+
+  .awards-step {
+    width: 10px;
+    height: 10px;
+  }
+
+  .awards-step-active {
+    width: 30px;
+  }
+}
+
+@media (max-width: 760px) {
+  .awards-slide {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0.9rem;
+    text-align: center;
+  }
+
+  .awards-year {
+    font-size: 52px;
+  }
+
+  .awards-mark {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: 0.6rem;
+  }
+
+  .awards-logo {
+    grid-row: auto;
+    width: 72px;
+    height: 72px;
+  }
+
+  .awards-logo img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .awards-copy {
+    grid-column: auto;
+    max-width: 34ch;
+  }
+
+  .awards-steps {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 480px) {
   .awards-title {
     font-size: 30px;
@@ -4619,8 +5386,29 @@ body {
     font-size: clamp(34px, 10vw, 44px);
   }
 
+  .highways-visual {
+    width: calc(100% + 1rem);
+    margin-left: -0.5rem;
+  }
+
+  /* The screen is too small for the paragraph on phones; keep the headline
+     and the call to action. */
   .highways-card {
-    width: 100%;
+    padding: 2.2cqi 3cqi;
+  }
+
+  .highways-card-title {
+    font-size: 4.8cqi;
+  }
+
+  .highways-card-copy {
+    display: none;
+  }
+
+  .highways-card-btn {
+    margin-top: 2.2cqi;
+    padding: 1.7cqi 2.6cqi;
+    font-size: 2.9cqi;
   }
 
   .highways-truck {
@@ -4631,6 +5419,14 @@ body {
   .highways-faq-trigger {
     grid-template-columns: 28px minmax(0, 1fr) 30px;
     column-gap: 8px;
+  }
+
+  .highways-faq-q {
+    font-size: 15px;
+  }
+
+  .highways-faq.is-open .highways-faq-panel {
+    max-height: none;
   }
 }
 

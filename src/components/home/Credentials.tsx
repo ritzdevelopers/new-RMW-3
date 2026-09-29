@@ -49,6 +49,71 @@ export function Credentials() {
     { scope: rootRef, dependencies: [ready, reduced] },
   );
 
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root || !ready) return;
+
+      const lane = root.querySelector<HTMLElement>(".proof-logos");
+      const marks = lane?.querySelectorAll<HTMLElement>(".proof-logo");
+      if (!lane || !marks?.length) return;
+
+      const open = () => {
+        lane.classList.add("is-stretched");
+        lane.classList.remove("is-paused");
+      };
+
+      if (reduced) {
+        gsap.set(lane, { clipPath: "inset(0% 0% 0% 0% round 999px)" });
+        gsap.set(marks, { autoAlpha: 1, x: 0 });
+        open();
+        return;
+      }
+
+      lane.classList.add("is-paused");
+      gsap.set(lane, { clipPath: "inset(0% 100% 0% 0% round 999px)" });
+      gsap.set(marks, { autoAlpha: 0, x: 28 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: {
+          trigger: lane,
+          start: "top 84%",
+          once: true,
+        },
+      });
+
+      tl.to(lane, {
+        clipPath: "inset(0% 92% 0% 0% round 999px)",
+        duration: 0.42,
+        ease: "power2.out",
+      })
+        .to(lane, {
+          clipPath: "inset(0% 0% 0% 0% round 999px)",
+          duration: 0.95,
+          ease: "power3.inOut",
+        })
+        .to(
+          marks,
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.5,
+            stagger: 0.035,
+            ease: "power2.out",
+          },
+          "-=0.55",
+        )
+        .add(open);
+
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    },
+    { scope: rootRef, dependencies: [ready, reduced] },
+  );
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root || reduced) return;
@@ -58,6 +123,7 @@ export function Credentials() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        if (!logos.classList.contains("is-stretched")) return;
         logos.classList.toggle("is-paused", !entry.isIntersecting);
       },
       { rootMargin: "80px 0px" },
@@ -96,13 +162,15 @@ export function Credentials() {
         </div>
 
         <div className="proof-logos">
-          <div className="proof-logos-track" aria-hidden>
-            {[...partners, ...partners].map((src, index) => (
-              <figure key={`${src}-${index}`} className="proof-logo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" />
-              </figure>
-            ))}
+          <div className="proof-logos-fade">
+            <div className="proof-logos-track" aria-hidden>
+              {[...partners, ...partners].map((src, index) => (
+                <figure key={`${src}-${index}`} className="proof-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" />
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
       </div>

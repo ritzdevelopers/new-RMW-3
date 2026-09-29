@@ -1,10 +1,12 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
+import { useLenis } from "lenis/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { useMotion } from "@/components/providers/MotionProvider";
 import { cn } from "@/lib/cn";
@@ -19,6 +21,29 @@ export function Header() {
   const rootRef = useRef<HTMLElement>(null);
   const { ready, reduced } = useMotion();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const lenis = useLenis();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const html = document.documentElement;
+    const toggle = toggleRef.current;
+    const previous = html.style.overflow;
+    html.style.overflow = "hidden";
+    lenis?.stop();
+
+    return () => {
+      html.style.overflow = previous;
+      lenis?.start();
+      toggle?.focus({ preventScroll: true });
+    };
+  }, [menuOpen, lenis]);
 
   // Close the mobile menu on route change and when the viewport grows
   // back into the desktop nav breakpoint.
@@ -103,6 +128,7 @@ export function Header() {
           </Link>
 
           <button
+            ref={toggleRef}
             type="button"
             className={cn("site-nav-toggle", menuOpen && "is-open")}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -116,25 +142,100 @@ export function Header() {
           </button>
         </div>
 
-        {menuOpen ? (
-          <nav id="site-nav-mobile" className="site-nav-mobile" aria-label="Mobile">
-            {site.nav.map((item) => (
-              <TransitionLink
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "site-nav-link",
-                  pathname === item.href && "is-active",
-                )}
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.label}
-              </TransitionLink>
-            ))}
-          </nav>
-        ) : null}
       </div>
+
+      {mounted
+        ? createPortal(
+            <MobileMenu
+              open={menuOpen}
+              pathname={pathname}
+              onClose={() => setMenuOpen(false)}
+            />,
+            document.body,
+          )
+        : null}
     </header>
+  );
+}
+
+function MobileMenu({
+  open,
+  pathname,
+  onClose,
+}: {
+  open: boolean;
+  pathname: string;
+  onClose: () => void;
+}) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (open) closeRef.current?.focus({ preventScroll: true });
+  }, [open]);
+
+  return (
+    <div
+      id="site-nav-mobile"
+      className={cn("mnav", open && "is-open")}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      aria-hidden={!open}
+      inert={!open}
+      data-lenis-prevent
+    >
+      <div className="mnav-glow" aria-hidden />
+
+      <div className="mnav-top">
+        <TransitionLink href="/" aria-label={site.fullName} onClick={onClose}>
+          <BrandMark />
+        </TransitionLink>
+        <button
+          ref={closeRef}
+          type="button"
+          className="mnav-close"
+          aria-label="Close menu"
+          onClick={onClose}
+        >
+          <span />
+          <span />
+        </button>
+      </div>
+
+      <nav className="mnav-links" aria-label="Mobile">
+        {site.nav.map((item, index) => (
+          <TransitionLink
+            key={item.href}
+            href={item.href}
+            className={cn("mnav-link", pathname === item.href && "is-active")}
+            style={{ "--i": index } as React.CSSProperties}
+            onClick={onClose}
+          >
+            <span className="mnav-num">{String(index + 1).padStart(2, "0")}</span>
+            <span className="mnav-label">{item.label}</span>
+            <span className="mnav-arrow" aria-hidden>
+              →
+            </span>
+          </TransitionLink>
+        ))}
+      </nav>
+
+      <div className="mnav-foot">
+        <Link href="/#start-a-project" className="mnav-cta" onClick={onClose}>
+          Start a project
+          <span aria-hidden>→</span>
+        </Link>
+        <div className="mnav-contact">
+          <a href={`mailto:${site.footer.email}`}>{site.footer.email}</a>
+          {site.footer.phones.map((phone) => (
+            <a key={phone} href={`tel:${phone.replace(/\s/g, "")}`}>
+              {phone}
+            </a>
+          ))}
+        </div>
+        <p className="mnav-tagline">{site.tagline}</p>
+      </div>
+    </div>
   );
 }
 
