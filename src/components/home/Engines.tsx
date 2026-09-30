@@ -83,7 +83,7 @@ export function Engines() {
       const horn = root.querySelector<HTMLElement>(".engines-horn");
       const copy = copyRef.current;
       const truckImg = root.querySelector<HTMLImageElement>(".engines-truck");
-      if (!title || !rig || !vehicle || !copy) return;
+      if (!title || !rig || !vehicle || !copy || !contextSafe) return;
 
       const mm = gsap.matchMedia();
       let cancelled = false;
