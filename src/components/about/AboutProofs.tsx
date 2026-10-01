@@ -175,11 +175,6 @@ export function AboutProofs() {
             </div>
           ))}
         </div>
-        <span className="about-proofs-spark" aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
       </div>
 
       <button
@@ -193,7 +188,9 @@ export function AboutProofs() {
         </svg>
       </button>
 
-      <div className="about-proofs-road" aria-hidden />
+      <div className="about-proofs-road" aria-hidden>
+        <span className="about-proofs-lane" />
+      </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={truckRef}
@@ -202,8 +199,15 @@ export function AboutProofs() {
         alt=""
       />
       <div className="about-proofs-mark" aria-hidden>
-        <span className="about-proofs-mark-cap" />
-        <span className="about-proofs-mark-label">RitzMedia</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/s2/distance.png" alt="" width={256} height={256} />
+        <span className="about-proofs-mark-label">
+          Ritz
+          <br />
+          Media
+          <br />
+          World
+        </span>
       </div>
     </section>
   );

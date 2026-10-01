@@ -75,12 +75,9 @@ export function AboutDrive() {
         const drive = gsap.timeline({
           scrollTrigger: {
             trigger: root,
-            start: "top top",
-            end: () => `+=${Math.round(window.innerHeight * 1.75)}`,
-            pin: true,
-            pinSpacing: true,
+            start: "top 80%",
+            end: "bottom 20%",
             scrub: true,
-            anticipatePin: 1,
             invalidateOnRefresh: true,
           },
         });

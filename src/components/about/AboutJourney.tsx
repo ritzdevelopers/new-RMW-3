@@ -50,6 +50,11 @@ const STOPS = [
   },
 ] as const;
 
+const TRUCK_GAP = 20;
+
+const truckEnd = (road: HTMLElement, truck: HTMLElement) =>
+  Math.max(0, road.clientWidth * 0.86 - truck.offsetWidth - TRUCK_GAP);
+
 export function AboutJourney() {
   const rootRef = useRef<HTMLElement>(null);
   const { ready, reduced } = useMotion();
@@ -68,8 +73,7 @@ export function AboutJourney() {
         const cards = root.querySelectorAll<HTMLElement>(".about-journey-stop");
         gsap.set(cards, { y: 0, autoAlpha: 1, xPercent: -50 });
         if (!road || !truck) return;
-        const end = Math.max(0, road.clientWidth * 0.86 - truck.offsetWidth * 0.65);
-        gsap.set(truck, { x: end });
+        gsap.set(truck, { x: truckEnd(road, truck) });
       };
 
       document.fonts.ready.then(() => {
@@ -120,8 +124,7 @@ export function AboutJourney() {
               ease: "none",
               immediateRender: true,
               onUpdate: () => {
-                const max = Math.max(0, road.clientWidth * 0.86 - truck.offsetWidth * 0.65);
-                const x = max * state.p;
+                const x = truckEnd(road, truck) * state.p;
                 const radius = Math.max(6, (tyres[0]?.offsetWidth ?? 14) / 2);
                 gsap.set(truck, { x });
                 gsap.set(tyres, {
@@ -160,8 +163,8 @@ export function AboutJourney() {
           <h2 className="about-journey-title">Our Journey</h2>
         </div>
         <p className="about-journey-intro">
-          Every kilometre added a new engine to the truck. Here are the stops that
-          shaped the agency we are today.
+          Every kilometre added a new engine to the truck.<br />
+          Here are the stops that shaped the agency we are today.
         </p>
       </div>
 
