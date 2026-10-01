@@ -60,6 +60,15 @@ function measurePage(box: HTMLElement) {
   };
 }
 
+function addImage(parent: HTMLElement, src: string, alt: string) {
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = alt;
+  img.draggable = false;
+  parent.appendChild(img);
+  return img;
+}
+
 function createPages() {
   const last = roadbookPages.length - 1;
   return roadbookPages.map((page, index) => {
@@ -67,11 +76,49 @@ function createPages() {
     const hard = index === 0 || index === last;
     el.className = hard ? "roadbook-page roadbook-page-cover" : "roadbook-page";
     el.dataset.density = hard ? "hard" : "soft";
-    const img = document.createElement("img");
-    img.src = page.src;
-    img.alt = page.title;
-    img.draggable = false;
-    el.appendChild(img);
+
+    if (page.kind === "cover") {
+      addImage(el, page.src, page.title);
+      return el;
+    }
+
+    if (page.kind === "plate") {
+      const frame = document.createElement("div");
+      frame.className = "roadbook-plate";
+      addImage(frame, page.src, page.title);
+      const caption = document.createElement("p");
+      caption.className = "roadbook-plate-cap";
+      const name = document.createElement("strong");
+      name.textContent = page.title;
+      caption.append(name, document.createTextNode(` — ${page.caption}`));
+      frame.appendChild(caption);
+      el.appendChild(frame);
+      return el;
+    }
+
+    const sheet = document.createElement("div");
+    sheet.className = "roadbook-sheet";
+    const kicker = document.createElement("p");
+    kicker.className = "roadbook-kicker";
+    kicker.textContent = page.kicker;
+    const title = document.createElement("h3");
+    title.className = "roadbook-sheet-title";
+    title.textContent = page.title;
+    const body = document.createElement("p");
+    body.className = "roadbook-sheet-body";
+    body.textContent = page.body;
+    sheet.append(kicker, title, body);
+    if (page.lines?.length) {
+      const list = document.createElement("ul");
+      list.className = "roadbook-sheet-list";
+      page.lines.forEach((line) => {
+        const item = document.createElement("li");
+        item.textContent = line;
+        list.appendChild(item);
+      });
+      sheet.appendChild(list);
+    }
+    el.appendChild(sheet);
     return el;
   });
 }
@@ -153,19 +200,19 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
         minHeight: size.height,
         maxHeight: size.height,
         drawShadow: true,
-        maxShadowOpacity: 0.55,
-        flippingTime: 1200,
+        maxShadowOpacity: 0.45,
+        flippingTime: 900,
         showCover: true,
         usePortrait: size.portrait,
         autoSize: false,
         startZIndex: 2,
         startPage: currentIndex,
-        mobileScrollSupport: true,
-        swipeDistance: 24,
+        mobileScrollSupport: false,
+        swipeDistance: 28,
         clickEventForward: false,
         useMouseEvents: true,
         showPageCorners: true,
-        disableFlipByClick: true,
+        disableFlipByClick: false,
       });
 
       pageFlip.on("init", (event: FlipEvent) => {
@@ -183,10 +230,11 @@ export function RoadbookFlip({ onPage, onApi }: RoadbookFlipProps) {
       });
 
       pageFlip.on("changeState", (event: FlipEvent) => {
-        if (event.data === "flipping") {
-          wrap.classList.remove("is-cover", "is-back");
-          wrap.classList.add("is-open");
-        }
+        if (event.data !== "flipping") return;
+        const opening = currentIndex === 0 || currentIndex === lastIndex;
+        if (!opening) return;
+        wrap.classList.remove("is-cover", "is-back");
+        wrap.classList.add("is-open");
       });
 
       pageFlip.loadFromHTML(createPages());
